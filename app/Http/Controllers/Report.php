@@ -48,7 +48,7 @@ class Report extends Controller
         });
       }
     })
-    ->selectRaw($groupSelect.', count(*) cnt, SUM(unit_price) as total_price, SUM(commission_pub) as total_com')
+    ->selectRaw($groupSelect.', count(*) cnt, SUM(unit_price) as total_price, SUM(commission_pub) as total_com, SUM(commission_sys) as total_com_sys')
     ->groupBy($group == 'order_time' ? 'date' : $groupSelect);
 
     $totalConversion = $data->get()->sum(function ($item) {
@@ -61,6 +61,10 @@ class Report extends Controller
 
     $totalCom = $data->get()->sum(function ($item) {
       return $item->total_com;
+    });
+
+    $totalComSys = $data->get()->sum(function ($item) {
+      return $item->total_com_sys;
     });
 
     $data = $data->paginate(self::PER_PAGE)->withQueryString();
@@ -94,7 +98,7 @@ class Report extends Controller
 
     $clicks = $clicks->keyBy($group == 'order_time' ? 'date' : $group)->toArray();
 
-    return view('content.reports.performance', compact('data', 'clicks', 'totalConversion', 'clickCount', 'totalPrice', 'totalCom'));
+    return view('content.reports.performance', compact('data', 'clicks', 'totalConversion', 'clickCount', 'totalPrice', 'totalCom', 'totalComSys'));
   }
 
   public function order(Request $request) {

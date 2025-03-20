@@ -53,7 +53,8 @@
                   <th>Lượt click</th>
                   <th>Chuyển đổi</th>
                   <th>Giá trị chuyển đổi</th>
-                  <th>Hoa hồng</th>
+                  <th>Hoa hồng Pub(₫)</th>
+                  <th>Hoa hồng TK(₫)</th>
                   <th>Tỉ lệ</th>
                   <th></th>
                 </tr>
@@ -65,6 +66,7 @@
                   <td>{{ number_format($totalConversion, 0, ',', '.') }}</td>
                   <td>{{ number_format($totalPrice, 0, ',', '.') }}</td>
                   <td>{{ number_format($totalCom, 0, ',', '.') }}</td>
+                  <td>{{ number_format($totalComSys, 0, ',', '.') }}</td>
                   <td colspan="2"></td>
                 </tr>
                 </tr>
@@ -106,6 +108,7 @@
                   <td> {{ number_format($row->cnt, 0, ',', '.') }} </td>
                   <td> {{ number_format($row->total_price, 0, ',', '.') }} </td>
                   <td> {{ number_format($row->total_com, 0, ',', '.') }} </td>
+                  <td> {{ number_format($row->total_com_sys, 0, ',', '.') }} </td>
                   <td> {{ number_format($clickByGroupId > 0 ? ($row->cnt / $clickByGroupId) * 100 : 0, 1, ',', '.') }}% </td>
                   <td style="width: 80px;">
                     <a href="{{ route('report-order', ['groupValue' => $groupValue, 'date' => (request('group', 'campaign_id') == 'order_time' ? $row->date . ' - ' . $row->date : request('date')), 'group' => request('group', 'campaign_id'), 'affiliate_id' => request('group', 'campaign_id') == 'user_id' ? $row->user->profile->affiliate_id : '']) }}" style="color: blueviolet;">
