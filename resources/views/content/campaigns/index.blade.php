@@ -18,6 +18,9 @@
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">Bảng danh sách chiến dịch</h4>
+        <a href="{{ route('campaign-create') }}" class="btn btn-primary mb-2 btn-icon-text btn-sm">
+          <i class="ti-plus btn-icon-prepend" style="font-size: 0.75rem;"></i>Thêm mới
+        </a>
         </p>
         <div class="table-responsive pt-3">
           <table class="table table-bordered table-hover">

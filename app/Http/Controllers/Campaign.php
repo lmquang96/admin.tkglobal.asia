@@ -18,6 +18,46 @@ class Campaign extends Controller
     return view('content.campaigns.index', compact('campaigns'));
   }
 
+  public function create() {
+    $categories = Category::where('status', 1)->get();
+
+    return view('content.campaigns.create', compact('categories'));
+  }
+
+  public function store(Request $request) {
+    $campaign = new CampaignModel();
+
+    // dd($request->all());
+
+    $campaign->name = $request->name;
+    $campaign->code = sha1(time());
+    $campaign->cp_type = $request->cp_type;
+    $campaign->commission_type = $request->commission_type;
+    $campaign->commission_text = $request->commission_text;
+    $campaign->commission = $request->commission;
+    $campaign->status = $request->status;
+    $campaign->category_id = $request->category_id;
+    $campaign->url = $request->url;
+    $campaign->tracking_url = $request->tracking_url;
+    $campaign->detail = $request->detail;
+    $campaign->image = $request->image;
+    $campaign->image_square = $request->image_square;
+
+    try {
+      $campaign->save();
+      $campaign->category->save();
+    } catch (\Exception $e) {
+      // TODO: log error
+      Log::error("--------------");
+      Log::error($e->getMessage());
+      Log::error("--------------");
+
+      return redirect()->route('campaigns')->with('error', 'Xảy ra lỗi rồi :((');
+    }
+
+    return redirect()->route('campaigns')->with('success', 'Thêm mới thành công!');
+  }
+
   public function edit(Request $request) {
     $id = $request->id;
 
@@ -28,7 +68,7 @@ class Campaign extends Controller
     return view('content.campaigns.edit', compact('campaignDetail', 'categories'));
   }
 
-  public function store(Request $request) {
+  public function update(Request $request) {
     $id = $request->id;
 
     $campaign = CampaignModel::find($id);
@@ -38,10 +78,11 @@ class Campaign extends Controller
     $campaign->commission_type = $request->commission_type;
     $campaign->commission_text = $request->commission_text;
     $campaign->status = $request->status;
-    $campaign->category->id = $request->category_id;
+    $campaign->category_id = $request->category_id;
     $campaign->url = $request->url;
     $campaign->tracking_url = $request->tracking_url;
     $campaign->detail = $request->detail;
+    $campaign->commission = $request->commission;
 
     try {
       $campaign->save();

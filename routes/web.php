@@ -5,6 +5,7 @@ use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Campaign;
 use App\Http\Controllers\Report;
 use App\Http\Controllers\Authenticate;
+use App\Http\Controllers\PaymentRequest;
 
 Route::get('/login', [Authenticate::class, 'login'])->name('login');
 Route::post('/authenticate', [Authenticate::class, 'authenticate'])->name('authenticate');
@@ -16,13 +17,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
   Route::prefix('campaigns')->group(function (){
     Route::get('/', [Campaign::class, 'index'])->name('campaigns');
+    Route::get('/create', [Campaign::class, 'create'])->name('campaign-create');
+    Route::post('/store', [Campaign::class, 'store'])->name('campaign-store');
     Route::get('/{id}', [Campaign::class, 'edit'])->name('campaign-edit');
-    Route::put('/{id}', [Campaign::class, 'store'])->name('campaign-store');
+    Route::put('/{id}', [Campaign::class, 'update'])->name('campaign-update');
   });
 
   Route::prefix('reports')->group(function (){
     Route::get('/performance', [Report::class, 'performance'])->name('report-performance');
     Route::get('/order', [Report::class, 'order'])->name('report-order');
     Route::get('/order-export', [Report::class, 'exportReportOrder'])->name('report-order-export');
+  });
+
+  Route::prefix('payment')->group(function (){
+    Route::get('/request', [PaymentRequest::class, 'index'])->name('payment-request');
+    Route::put('/update-status', [PaymentRequest::class, 'changeStatus'])->name('payment-update-status');
   });
 });

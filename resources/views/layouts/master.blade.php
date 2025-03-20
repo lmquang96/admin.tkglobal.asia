@@ -23,6 +23,7 @@
   <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
   <!-- endinject -->
   <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.min.css" rel="stylesheet" type="text/css" />
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -162,6 +163,12 @@
                 </li>
               </ul>
             </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('payment-request') }}">
+              <i class="mdi mdi-view-grid menu-icon"></i>
+              <span class="menu-title">Thanh toán</span>
+            </a>
           </li>
         </ul>
       </nav>
