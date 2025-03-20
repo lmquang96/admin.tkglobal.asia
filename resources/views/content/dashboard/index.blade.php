@@ -31,25 +31,25 @@
   </div> --}}
   <div class="row">
     <div class="d-none d-xl-block col-xl-6 grid-margin stretch-card">
-      <div class="card tale-bg h-100">
-        <div class="card-people mt-auto h-100">
-          <img src="assets/images/dashboard/people.svg" alt="people" style="height: 100%; object-fit: cover;">
-          <div class="weather-info">
-            <div class="d-flex">
-              <div>
-                <h2 class="mb-0 font-weight-normal"><i class="mdi mdi-weather-fog me-2"></i>21<sup>°C</sup></h2>
-              </div>
-              <div class="ms-2">
-                <h4 class="location font-weight-normal">Hà Nội</h4>
-                <h6 class="font-weight-normal">Việt Nam</h6>
+      <div class="row">
+        <div class="col-md-6 mb-4 stretch-card transparent">
+          <div class="card tale-bg" style="height: 134px;">
+            <div class="card-people mt-auto h-100">
+              <img src="assets/images/dashboard/people.svg" alt="people" style="height: 100%; object-fit: cover;">
+              <div class="weather-info">
+                <div class="d-flex">
+                  <div>
+                    <h2 class="mb-0 font-weight-normal"><i class="mdi mdi-weather-fog me-2"></i>21<sup>°C</sup></h2>
+                  </div>
+                  <div class="ms-2">
+                    <h4 class="location font-weight-normal">Hà Nội</h4>
+                    <h6 class="font-weight-normal">Việt Nam</h6>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="col-xl-6 grid-margin transparent">
-      <div class="row">
         <div class="col-md-6 mb-4 stretch-card transparent">
           <div class="card card-tale">
             <div class="card-body">
@@ -59,18 +59,40 @@
             </div>
           </div>
         </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 stretch-card transparent">
+          <div class="card card-light-danger">
+            <div class="card-body">
+              <p class="mb-4">Hoa hồng Pub trong 7 ngày</p>
+              <p class="fs-26 mb-2">{{ number_format($totalCom, 0, ',', '.') }}₫</p>
+              <p>{{ round($totalComChange, 2) }}% (7 ngày trước)</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 stretch-card transparent">
+          <div class="card" style="background-color: coral; color: white;">
+            <div class="card-body">
+              <p class="mb-4">Hoa hồng TK 7 ngày</p>
+              <p class="fs-26 mb-2">{{ number_format($totalComSys, 0, ',', '.') }}₫</p>
+              <p>{{ round($totalComSysChange, 2) }}% (7 ngày trước)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-6 grid-margin transparent">
+      <div class="row">
         <div class="col-md-6 mb-4 stretch-card transparent">
           <div class="card card-dark-blue">
             <div class="card-body">
-              <p class="mb-4">Số chuyển đỏi trong 7 ngày</p>
+              <p class="mb-4">Số chuyển đổi trong 7 ngày</p>
               <p class="fs-26 mb-2">{{ $totalConversion }}</p>
               <p>{{ round($totalConversionChange, 2) }}% (7 ngày trước)</p>
             </div>
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6 mb-4 mb-md-0 stretch-card transparent">
+        <div class="col-md-6 mb-4 stretch-card transparent">
           <div class="card card-light-blue">
             <div class="card-body">
               <p class="mb-4">Giá trị chuyển đổi trong 7 ngày</p>
@@ -79,14 +101,25 @@
             </div>
           </div>
         </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-4 mb-md-0 stretch-card transparent">
+          <div class="card" style="background-color: darkgoldenrod; color: white;">
+            <div class="card-body">
+              <p class="mb-4">Hoa hồng tổng 7 ngày</p>
+              <p class="fs-26 mb-2">{{ number_format($totalCom + $totalComSys, 0, ',', '.') }}₫</p>
+              <p>{{ round($totalComSysChange, 2) }}% (7 ngày trước)</p>
+            </div>
+          </div>
+        </div>
         <div class="col-md-6 stretch-card transparent">
-          <div class="card card-light-danger">
+          {{-- <div class="card card-light-danger">
             <div class="card-body">
               <p class="mb-4">Hoa hồng trong 7 ngày</p>
               <p class="fs-26 mb-2">{{ number_format($totalCom, 0, ',', '.') }}₫</p>
               <p>{{ round($totalComChange, 2) }}% (7 ngày trước)</p>
             </div>
-          </div>
+          </div> --}}
         </div>
       </div>
     </div>

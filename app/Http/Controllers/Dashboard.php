@@ -30,8 +30,10 @@ class Dashboard extends Controller
     $totalSales = $statistics['totalSales'];
     $clickCount = $statistics['clickCount'];
     $totalConversion = $statistics['totalConversion'];
+    $totalComSys = $statistics['totalComSys'];
 
     $totalComChange = $statisticsChange['totalCom'] > 0 ? ($statistics['totalCom'] / $statisticsChange['totalCom'] * 100) - 100 : 100;
+    $totalComSysChange = $statisticsChange['totalComSys'] > 0 ? ($statistics['totalComSys'] / $statisticsChange['totalComSys'] * 100) - 100 : 100;
     $totalSalesChange = $statisticsChange['totalSales'] > 0 ? ($statistics['totalSales'] / $statisticsChange['totalSales'] * 100) - 100 : 100;
     $clickCountChange = $statisticsChange['clickCount'] > 0 ? ($statistics['clickCount'] / $statisticsChange['clickCount'] * 100) - 100 : 100;
     $totalConversionChange = $statisticsChange['totalConversion'] > 0 ? ($statistics['totalConversion'] / $statisticsChange['totalConversion'] * 100) - 100 : 100;
@@ -41,7 +43,7 @@ class Dashboard extends Controller
     });
 
     return view('content.dashboard.index', compact('totalCom', 'totalSales', 'clickCount', 'totalConversion',
-      'totalComChange', 'totalSalesChange', 'clickCountChange', 'totalConversionChange', 'topAffiliates'));
+      'totalComChange', 'totalSalesChange', 'clickCountChange', 'totalConversionChange', 'topAffiliates', 'totalComSys', 'totalComSysChange'));
   }
 
   function getStatistics($sDate, $eDate) {
@@ -49,6 +51,7 @@ class Dashboard extends Controller
     ->whereBetween('order_time', [$sDate.' 00:00:00', $eDate.' 23:59:59']);
 
     $totalCom = $query->sum('commission_pub');
+    $totalComSys = $query->sum('commission_sys');
     $totalSales = $query->selectRaw('sum(unit_price * quantity) as sales')->pluck('sales')->first();
 
     $totalConversion = $query->count();
@@ -61,6 +64,7 @@ class Dashboard extends Controller
 
     return [
       'totalCom' => $totalCom,
+      'totalComSys' => $totalComSys,
       'totalSales' => $totalSales ?? 0,
       'clickCount' => $clickCount,
       'totalConversion' => $totalConversion
