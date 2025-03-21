@@ -6,6 +6,7 @@ use App\Http\Controllers\Campaign;
 use App\Http\Controllers\Report;
 use App\Http\Controllers\Authenticate;
 use App\Http\Controllers\PaymentRequest;
+use App\Http\Controllers\Category;
 
 Route::get('/login', [Authenticate::class, 'login'])->name('login');
 Route::post('/authenticate', [Authenticate::class, 'authenticate'])->name('authenticate');
@@ -21,6 +22,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/store', [Campaign::class, 'store'])->name('campaign-store');
     Route::get('/{id}', [Campaign::class, 'edit'])->name('campaign-edit');
     Route::put('/{id}', [Campaign::class, 'update'])->name('campaign-update');
+  });
+
+  Route::prefix('categories')->group(function (){
+    Route::get('/', [Category::class, 'index'])->name('categories');
+    Route::get('/create', [Category::class, 'create'])->name('category-create');
+    Route::post('/store', [Category::class, 'store'])->name('category-store');
   });
 
   Route::prefix('reports')->group(function (){
