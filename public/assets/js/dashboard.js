@@ -1,6 +1,7 @@
 (function($) {
   'use strict';
   $(function() {
+    const dateQuery = (new URL(location.href)).searchParams.get('date');
     if ($("#order-chart").length) {
       const ctx = document.getElementById('order-chart');
       new Chart(ctx, {
@@ -79,7 +80,9 @@
     $.ajax({
       type: "GET",
       url: "/data-chart",
-      data: {},
+      data: {
+        date: dateQuery
+      },
       success: function (response) {
         if (response.status == 200) {
           if ($("#sales-chart").length) {
@@ -143,7 +146,7 @@
                       maxTicksLimit: 10,
                       color:"#6C7383",
                       callback: function(value) {
-                        return value.toLocaleString('Vi-vn');
+                        return value < 1000000 ? value.toLocaleString('Vi-vn')+'₫' : (value/1000000).toLocaleString('Vi-vn')+' triệu ₫';
                       },
                       autoSkip: true,
                       maxTicksLimit: 10,
@@ -164,7 +167,7 @@
                       autoSkip: true,
                       maxTicksLimit: 10,
                       callback: function(value) {
-                        return value.toLocaleString('Vi-vn')+'₫';
+                        return value.toLocaleString('Vi-vn');
                       },
                       autoSkip: true,
                       maxTicksLimit: 10,
@@ -174,10 +177,10 @@
                 },
                 plugins: {
                   legend: {
-                      display: false,
-                      labels: {
-                          color: 'rgb(255, 99, 132)'
-                      }
+                    display: false,
+                    labels: {
+                      color: 'rgb(255, 99, 132)'
+                    }
                   }
                 }
               },
@@ -235,20 +238,20 @@
         },
         plugins: [{
           afterDatasetUpdate: function (chart, args, options) {
-              const chartId = chart.canvas.id;
-              var i;
-              const legendId = `${chartId}-legend`;
-              const ul = document.createElement('ul');
-              for(i=0;i<chart.data.datasets[0].data.length; i++) {
-                  ul.innerHTML += `
-                  <li>
-                    <span style="background-color: ${chart.data.datasets[0].backgroundColor[i]}"></span>
-                    ${chart.data.labels[i]}
-                  </li>
-                `;
-              }
-              return document.getElementById(legendId).appendChild(ul);
+            const chartId = chart.canvas.id;
+            var i;
+            const legendId = `${chartId}-legend`;
+            const ul = document.createElement('ul');
+            for(i=0;i<chart.data.datasets[0].data.length; i++) {
+                ul.innerHTML += `
+                <li>
+                  <span style="background-color: ${chart.data.datasets[0].backgroundColor[i]}"></span>
+                  ${chart.data.labels[i]}
+                </li>
+              `;
             }
+            return document.getElementById(legendId).appendChild(ul);
+          }
         }]
       });
     }
@@ -259,11 +262,11 @@
         data: {
           labels: ["Offline sales", "Online sales", "Returns"],
           datasets: [{
-              data: [100, 50, 50],
-              backgroundColor: [
-                 "#4B49AC","#FFC100", "#248AFD",
-              ],
-              borderColor: "rgba(0,0,0,0)"
+            data: [100, 50, 50],
+            backgroundColor: [
+                "#4B49AC","#FFC100", "#248AFD",
+            ],
+            borderColor: "rgba(0,0,0,0)"
           }]
         },
         options: {
@@ -277,26 +280,26 @@
           legend: false,
           plugins: {
             legend: {
-                display: false,
+              display: false,
             }
           }
         },
         plugins: [{
           afterDatasetUpdate: function (chart, args, options) {
-              const chartId = chart.canvas.id;
-              var i;
-              const legendId = `${chartId}-legend`;
-              const ul = document.createElement('ul');
-              for(i=0;i<chart.data.datasets[0].data.length; i++) {
-                  ul.innerHTML += `
-                  <li>
-                    <span style="background-color: ${chart.data.datasets[0].backgroundColor[i]}"></span>
-                    ${chart.data.labels[i]}
-                  </li>
-                `;
-              }
-              return document.getElementById(legendId).appendChild(ul);
+            const chartId = chart.canvas.id;
+            var i;
+            const legendId = `${chartId}-legend`;
+            const ul = document.createElement('ul');
+            for(i=0;i<chart.data.datasets[0].data.length; i++) {
+                ul.innerHTML += `
+                <li>
+                  <span style="background-color: ${chart.data.datasets[0].backgroundColor[i]}"></span>
+                  ${chart.data.labels[i]}
+                </li>
+              `;
             }
+            return document.getElementById(legendId).appendChild(ul);
+          }
         }]
       });
     }
@@ -318,7 +321,6 @@
       document.querySelector('.page-body-wrapper').classList.add('pt-0');
       document.querySelector('.navbar').classList.add('pt-5');
       document.querySelector('.navbar').classList.add('mt-3');
-      
     }
     // document.querySelector('#bannerClose').addEventListener('click',function() {
     //   document.querySelector('#proBanner').classList.add('d-none');
@@ -376,14 +378,14 @@
       var tr = $(this).closest('tr');
       var row = table.row( tr );
       if ( row.child.isShown() ) {
-          // This row is already open - close it
-          row.child.hide();
-          tr.removeClass('shown');
+        // This row is already open - close it
+        row.child.hide();
+        tr.removeClass('shown');
       }
       else {
-          // Open this row
-          row.child( format(row.data()) ).show();
-          tr.addClass('shown');
+        // Open this row
+        row.child( format(row.data()) ).show();
+        tr.addClass('shown');
       }
     });
   });

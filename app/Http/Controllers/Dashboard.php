@@ -12,17 +12,24 @@ class Dashboard extends Controller
 {
   const DEFAULT_SUB_DAYS = 6;
 
-  function index() {
+  function index(Request $request) {
     $subDays = self::DEFAULT_SUB_DAYS;
-    $eDate = Carbon::now()->format('Y-m-d');
-    $sDate = Carbon::now()->subDays($subDays)->format('Y-m-d');
+    if ($request->date) {
+      $date = explode(' - ', $request->date);
+      $sDate = $date[0];
+      $eDate = $date[1];
+      $subDays = Carbon::parse($sDate)->diffInDays(Carbon::parse($eDate));
+    } else {
+      $eDate = Carbon::now()->format('Y-m-d');
+      $sDate = Carbon::now()->subDays($subDays)->format('Y-m-d');
+    }
     $eDateChange = Carbon::now()->subDays($subDays+1)->format('Y-m-d');
     $sDateChange = Carbon::now()->subDays(2*$subDays+1)->format('Y-m-d');
 
-    $statistics = Cache::remember('statistics', 600, function() use ($sDate, $eDate) {
+    $statistics = Cache::remember('statistics'.$sDate.$eDate, 600, function() use ($sDate, $eDate) {
       return self::getStatistics($sDate, $eDate);
     });
-    $statisticsChange = Cache::remember('statistics_change', 600, function() use ($sDateChange, $eDateChange) {
+    $statisticsChange = Cache::remember('statistics_change'.$sDate.$eDate, 600, function() use ($sDateChange, $eDateChange) {
       return self::getStatistics($sDateChange, $eDateChange);
     });
 
@@ -38,12 +45,12 @@ class Dashboard extends Controller
     $clickCountChange = $statisticsChange['clickCount'] > 0 ? ($statistics['clickCount'] / $statisticsChange['clickCount'] * 100) - 100 : 100;
     $totalConversionChange = $statisticsChange['totalConversion'] > 0 ? ($statistics['totalConversion'] / $statisticsChange['totalConversion'] * 100) - 100 : 100;
 
-    $topAffiliates = Cache::remember('top_afffiliates', 600, function() use ($sDate, $eDate) {
+    $topAffiliates = Cache::remember('top_afffiliates'.$sDate.$eDate, 600, function() use ($sDate, $eDate) {
       return self::getTopAffiliates($sDate, $eDate);
     });
 
     return view('content.dashboard.index', compact('totalCom', 'totalSales', 'clickCount', 'totalConversion',
-      'totalComChange', 'totalSalesChange', 'clickCountChange', 'totalConversionChange', 'topAffiliates', 'totalComSys', 'totalComSysChange'));
+      'totalComChange', 'totalSalesChange', 'clickCountChange', 'totalConversionChange', 'topAffiliates', 'totalComSys', 'totalComSysChange', 'subDays'));
   }
 
   function getStatistics($sDate, $eDate) {
@@ -71,12 +78,19 @@ class Dashboard extends Controller
     ];
   }
 
-  function getDataChart() {
+  function getDataChart(Request $request) {
     $subDays = self::DEFAULT_SUB_DAYS;
-    $eDate = Carbon::now()->format('Y-m-d');
-    $sDate = Carbon::now()->subDays($subDays)->format('Y-m-d');
+    if ($request->date) {
+      $date = explode(' - ', $request->date);
+      $sDate = $date[0];
+      $eDate = $date[1];
+      $subDays = Carbon::parse($sDate)->diffInDays(Carbon::parse($eDate));
+    } else {
+      $eDate = Carbon::now()->format('Y-m-d');
+      $sDate = Carbon::now()->subDays($subDays)->format('Y-m-d');
+    }
 
-    $result = Cache::remember('chart_data', 600, function() use ($sDate, $eDate) {
+    $result = Cache::remember('chart_data'.$sDate.$eDate, 600, function() use ($sDate, $eDate) {
       $merged = [];
       $comData = self::getComData($sDate, $eDate);
       $clickData = self::getClickData($sDate, $eDate);

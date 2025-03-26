@@ -3,6 +3,16 @@
 @section('title', 'Dashboard')
 @section('content')
 <div class="content-wrapper">
+  <form class="form-sample" method="GET" action="{{ route('report-performance') }}">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label>Khoảng ngày</label>
+          <x-date-range-input name="dashboard_date" date="{{ request('date') }}" autoApply="0" />
+        </div>
+      </div>
+    </div>
+  </form>
   {{-- <div class="row">
     <div class="col-md-12 grid-margin">
       <div class="row">
@@ -53,9 +63,9 @@
         <div class="col-md-6 mb-4 stretch-card transparent">
           <div class="card card-tale">
             <div class="card-body">
-              <p class="mb-4">Lượt click trong 7 ngày</p>
+              <p class="mb-4">Lượt click</p>
               <p class="fs-26 mb-2">{{ $clickCount }}</p>
-              <p>{{ round($clickCountChange, 2) }}% (7 ngày trước)</p>
+              <p>{{ round($clickCountChange, 2) }}% ({{ $subDays + 1 }} ngày trước)</p>
             </div>
           </div>
         </div>
@@ -64,18 +74,18 @@
         <div class="col-md-6 stretch-card transparent">
           <div class="card card-light-danger">
             <div class="card-body">
-              <p class="mb-4">Hoa hồng Pub trong 7 ngày</p>
+              <p class="mb-4">Hoa hồng Pub</p>
               <p class="fs-26 mb-2">{{ number_format($totalCom, 0, ',', '.') }}₫</p>
-              <p>{{ round($totalComChange, 2) }}% (7 ngày trước)</p>
+              <p>{{ round($totalComChange, 2) }}% ({{ $subDays + 1 }} ngày trước)</p>
             </div>
           </div>
         </div>
         <div class="col-md-6 stretch-card transparent">
           <div class="card" style="background-color: coral; color: white;">
             <div class="card-body">
-              <p class="mb-4">Hoa hồng TK 7 ngày</p>
+              <p class="mb-4">Hoa hồng TK</p>
               <p class="fs-26 mb-2">{{ number_format($totalComSys, 0, ',', '.') }}₫</p>
-              <p>{{ round($totalComSysChange, 2) }}% (7 ngày trước)</p>
+              <p>{{ round($totalComSysChange, 2) }}% ({{ $subDays + 1 }} ngày trước)</p>
             </div>
           </div>
         </div>
@@ -86,18 +96,18 @@
         <div class="col-md-6 mb-4 stretch-card transparent">
           <div class="card card-dark-blue">
             <div class="card-body">
-              <p class="mb-4">Số chuyển đổi trong 7 ngày</p>
+              <p class="mb-4">Số chuyển đổi</p>
               <p class="fs-26 mb-2">{{ $totalConversion }}</p>
-              <p>{{ round($totalConversionChange, 2) }}% (7 ngày trước)</p>
+              <p>{{ round($totalConversionChange, 2) }}% ({{ $subDays + 1 }} ngày trước)</p>
             </div>
           </div>
         </div>
         <div class="col-md-6 mb-4 stretch-card transparent">
           <div class="card card-light-blue">
             <div class="card-body">
-              <p class="mb-4">Giá trị chuyển đổi trong 7 ngày</p>
+              <p class="mb-4">Giá trị chuyển đổi</p>
               <p class="fs-26 mb-2">{{ number_format($totalSales, 0, ',', '.') }}₫</p>
-              <p>{{ round($totalSalesChange, 2) }}% (7 ngày trước)</p>
+              <p>{{ round($totalSalesChange, 2) }}% ({{ $subDays + 1 }} ngày trước)</p>
             </div>
           </div>
         </div>
@@ -106,9 +116,9 @@
         <div class="col-md-6 mb-4 mb-md-0 stretch-card transparent">
           <div class="card" style="background-color: darkgoldenrod; color: white;">
             <div class="card-body">
-              <p class="mb-4">Hoa hồng tổng 7 ngày</p>
+              <p class="mb-4">Hoa hồng tổng</p>
               <p class="fs-26 mb-2">{{ number_format($totalCom + $totalComSys, 0, ',', '.') }}₫</p>
-              <p>{{ round($totalComSysChange, 2) }}% (7 ngày trước)</p>
+              <p>{{ round($totalComSysChange, 2) }}% ({{ $subDays + 1 }} ngày trước)</p>
             </div>
           </div>
         </div>
@@ -117,7 +127,7 @@
             <div class="card-body">
               <p class="mb-4">Hoa hồng trong 7 ngày</p>
               <p class="fs-26 mb-2">{{ number_format($totalCom, 0, ',', '.') }}₫</p>
-              <p>{{ round($totalComChange, 2) }}% (7 ngày trước)</p>
+              <p>{{ round($totalComChange, 2) }}% ({{ $subDays + 1 }} ngày trước)</p>
             </div>
           </div> --}}
         </div>
@@ -720,4 +730,9 @@
     </div>
   </div> --}}
 </div>
+@endsection
+@section('script')
+<script>
+
+</script>
 @endsection

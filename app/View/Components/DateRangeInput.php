@@ -15,6 +15,7 @@ class DateRangeInput extends Component
         public string $name,
         public string $date,
         public $borderColor = null,
+        public string $autoApply = "1",
     )
     {
         //
