@@ -18,4 +18,8 @@ class Campaign extends Model
     public function linkHistories() {
         return $this->hasMany(LinkHistory::class);
     }
+
+    public function transactions() {
+        return $this->hasMany(Transaction::class);
+    }
 }

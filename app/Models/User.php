@@ -57,4 +57,12 @@ class User extends Authenticatable
     public function paymentRequests() {
         return $this->hasMany(PaymentRequest::class);
     }
+
+    public function transactions() {
+        return $this->hasMany(Transaction::class);
+    }
+
+    public function advancePaymentHistories() {
+        return $this->hasMany(AdvancePaymentHistory::class);
+    }
 }

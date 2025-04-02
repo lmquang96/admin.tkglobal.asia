@@ -9,4 +9,6 @@ class Balance extends Model
 {
     /** @use HasFactory<\Database\Factories\BalanceFactory> */
     use HasFactory;
+
+    protected $guarded = [];
 }

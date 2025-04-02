@@ -7,6 +7,7 @@ use App\Http\Controllers\Report;
 use App\Http\Controllers\Authenticate;
 use App\Http\Controllers\PaymentRequest;
 use App\Http\Controllers\Category;
+use App\Http\Controllers\ScanTransaction;
 
 Route::get('/login', [Authenticate::class, 'login'])->name('login');
 Route::post('/authenticate', [Authenticate::class, 'authenticate'])->name('authenticate');
@@ -39,5 +40,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::prefix('payment')->group(function (){
     Route::get('/request', [PaymentRequest::class, 'index'])->name('payment-request');
     Route::put('/update-status', [PaymentRequest::class, 'changeStatus'])->name('payment-update-status');
+    Route::get('/advance-history', [PaymentRequest::class, 'advancePaymentHistory'])->name('payment-advance-history');
+    Route::post('/advance-save', [PaymentRequest::class, 'advancePayment'])->name('payment-advance-save');
+    Route::delete('/advance-delete/{id}', [PaymentRequest::class, 'deleteAdvancePayment'])->name('payment-advance-delete');
+  });
+
+  Route::prefix('scan-transaction')->group(function (){
+    Route::get('/', [ScanTransaction::class, 'index'])->name('scan-transaction');
+    Route::post('/scan', [ScanTransaction::class, 'scan'])->name('scan-transaction-scan');
   });
 });

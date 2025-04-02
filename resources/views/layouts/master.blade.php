@@ -25,6 +25,7 @@
   <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.min.css" rel="stylesheet" type="text/css" />
   @vite(['resources/css/app.css', 'resources/js/app.js'])
+  @yield('css');
 </head>
 
 <body>
@@ -104,7 +105,7 @@
               <span class="font-bold">{{ auth()->user()->name }}</span>
             </div>
             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" id="profileDropdown">
-              <img src="{{ asset('assets/images/avatar/default.png') }}" alt="profile" />
+              <img src="{{ !empty(auth()->user()->profile->avatar) ? asset('https://tkglobal.asia/assets/img/avatars/' . auth()->user()->profile->avatar) : asset('assets/images/avatar/default.png') }}" alt="profile" />
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
               {{-- <a class="dropdown-item">
@@ -170,6 +171,20 @@
               <span class="menu-title">Thanh toán</span>
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('payment-advance-history') }}">
+              <i class="mdi mdi-arrange-bring-to-front menu-icon"></i>
+              <span class="menu-title">Tạm ứng</span>
+            </a>
+          </li>
+          @if (auth()->user()->id == 8)
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('scan-transaction') }}">
+              <i class="mdi mdi-scale-balance menu-icon"></i>
+              <span class="menu-title">Quét rút</span>
+            </a>
+          </li>
+          @endif
         </ul>
       </nav>
       <!-- partial -->
@@ -206,6 +221,7 @@
   <!-- <script src="assets/js/Chart.roundedBarCharts.js"></script> -->
   <!-- End custom js for this page-->
   @yield('script')
+  @yield('script-2')
 </body>
 
 </html>

@@ -1,6 +1,6 @@
 @extends('layouts/master')
 
-@section('title', 'Reports')
+@section('title', 'Payment - Đăng ký rút tiền')
 @section('content')
 <div class="content-wrapper">
   <div class="row">
@@ -155,6 +155,8 @@
               </tbody>
             </table>
           </div>
+          @else
+          <x-empty-data />
           @endif
         </div>
       </div>

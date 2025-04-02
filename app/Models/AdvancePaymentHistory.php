@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Transaction extends Model
+class AdvancePaymentHistory extends Model
 {
-    /** @use HasFactory<\Database\Factories\TransactionFactory> */
+    /** @use HasFactory<\Database\Factories\AdvancePaymentHistoryFactory> */
     use HasFactory;
 
     protected $guarded = [];
@@ -15,10 +15,5 @@ class Transaction extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function campaign()
-    {
-        return $this->belongsTo(Campaign::class);
     }
 }
