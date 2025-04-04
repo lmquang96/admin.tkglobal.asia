@@ -44,13 +44,14 @@
                   <th> Ngày tạo </th>
                   <th> Trạng thái </th>
                   <th> Ngày cập nhật </th>
+                  <th> Thao tác </th>
                 </tr>
               </thead>
               <tbody>
                 <tr class="table-warning">
                   <td colspan="3"></td>
                   <td>{{ number_format($totalAmount, 0, ',', '.') }}</td>
-                  <td colspan="3"></td>
+                  <td colspan="4"></td>
                 </tr>
                 @foreach ($data as $key => $history)
                 <tr>

@@ -60,12 +60,16 @@ class PaymentRequest extends Controller
   }
 
   public function advancePaymentHistory(Request $request) {
-    if (!$request->month) {
-      $request->merge(['month' => Carbon::now()->format('Y-m')]);
+    if (!$request->fromMonth) {
+      $request->merge(['fromMonth' => Carbon::now()->format('Y-m')]);
+    }
+
+    if (!$request->toMonth) {
+      $request->merge(['toMonth' => Carbon::now()->format('Y-m')]);
     }
 
     $data = AdvancePaymentHistory::query()
-    ->where('target_month', '=', $request->month);
+    ->whereBetween('target_month', [$request->fromMonth, $request->toMonth]);
 
     $totalAmount = $data->sum('amount');
 
