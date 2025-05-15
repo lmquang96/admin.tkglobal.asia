@@ -33,7 +33,18 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label>Trạng thái</label>
+                  <select class="form-select" name="status">
+                    <option value="">Tất cả</option>
+                    <option value="Approved" {{ request('status') == 'Approved' ? 'selected' : ''}}>Đã duyệt</option>
+                    <option value="Pending" {{ request('status') == 'Pending' ? 'selected' : ''}}>Tạm duyệt</option>
+                    <option value="Rejected" {{ request('status') == 'Rejected' ? 'selected' : ''}}>Đã hủy</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-2">
                 <div class="form-group">
                   <label class="d-block text-white">.</label>
                   <button type="submit" class="btn btn-primary mb-2 btn-icon-text">
@@ -120,6 +131,8 @@
               </tbody>
             </table>
           </div>
+          @else
+          <div class="text-center">Không tìm thấy dữ liệu phù hợp</div>
           @endif
         </div>
       </div>

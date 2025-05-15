@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Conversion;
 use App\Models\Transaction;
 use App\Models\Balance;
+use App\Models\AdvancePaymentHistory;
 use Carbon\Carbon;
 
 class ScanTransaction extends Controller
@@ -39,13 +40,21 @@ class ScanTransaction extends Controller
         $conversions = Conversion::query()
         ->whereBetween('order_time', [$month.'-01 00:00:00', $month.'-31 23:59:59'])
         ->where('status', 'Approved')
-        ->selectRaw('sum(commission_pub) commission_pub, sum(commission_sys) commission_sys, campaign_id, user_id')
-        ->groupBy('user_id')
+        ->selectRaw('sum(commission_pub) commission_pub, sum(commission_sys) commission_sys, campaign_id, user_id');
+
+        $conversionsByCampaign = $conversions->groupBy('user_id', 'campaign_id')
+        ->get();
+
+        $conversionsByUser = $conversions->groupBy('user_id')
+        ->get();
+
+        $advancePayment = AdvancePaymentHistory::where('target_month', $month)
+        ->where('status', 0)
         ->get();
 
         // UPDATE CONVERSIONS STATUS TO PAID
 
-        foreach($conversions as $key => $conversion) {
+        foreach($conversionsByCampaign as $key => $conversion) {
             Transaction::create([
                 'code' => sha1(time() + $key),
                 'target_month' => $month,
@@ -54,18 +63,24 @@ class ScanTransaction extends Controller
                 'campaign_id' => $conversion->campaign_id,
                 'user_id' => $conversion->user_id
             ]);
+        }
+
+        foreach($conversionsByUser as $key => $conversion) {
+
+            $balanceAmount = $conversion->commission_pub;
 
             $balance = Balance::where('user_id', $conversion->user_id)->pluck('balance')->first();
             if (!$balance) {
                 Balance::create([
                     'code' => sha1(time() + $key),
-                    'balance' => $conversion->commission_pub,
+                    'balance' => $balanceAmount,
                     'last_updated' => Carbon::now(),
                     'user_id' => $conversion->user_id
                 ]);
             } else {
+                $balanceAmount = $balance + $balanceAmount;
                 Balance::where('user_id', $conversion->user_id)->update([
-                    'balance' => $balance + $conversion->commission_pub,
+                    'balance' => $balanceAmount,
                     'last_updated' => Carbon::now()
                 ]);
             }

@@ -48,6 +48,9 @@ class Report extends Controller
         });
       }
     })
+    ->when($request->status, function($q, $status) {
+      $q->where('status', $status);
+    })
     ->selectRaw($groupSelect.', count(*) cnt, SUM(unit_price) as total_price, SUM(commission_pub) as total_com, SUM(commission_sys) as total_com_sys')
     ->groupBy($group == 'order_time' ? 'date' : $groupSelect);
 
