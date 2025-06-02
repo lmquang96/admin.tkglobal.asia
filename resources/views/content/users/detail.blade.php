@@ -49,11 +49,9 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group row">
-                  <label class="col-sm-3 col-form-label">Danh mục</label>
+                  <label class="col-sm-3 col-form-label">Thành phố</label>
                   <div class="col-sm-9">
-                    <select class="form-select form-select-sm" name="category_id">
-                      
-                    </select>
+                    <select id="city" class="select2 form-select" name="city"></select>
                   </div>
                 </div>
               </div>
@@ -61,8 +59,15 @@
                 <div class="form-group row">
                   <label class="col-sm-3 col-form-label">Loại tài khoản</label>
                   <div class="col-sm-9">
-                    <select class="form-select form-select-sm" name="category_id">
-                      
+                    <select id="account_type" class="select2 form-select" name="account_type">
+                      <option value="Individual"
+                        {{ !empty(auth()->user()->profile->account_type) && auth()->user()->profile->account_type == 'Individual' ? 'selected' : '' }}>
+                        Cá
+                        nhân</option>
+                      <option value="Company"
+                        {{ !empty(auth()->user()->profile->account_type) && auth()->user()->profile->account_type == 'Company' ? 'selected' : '' }}>
+                        Doanh
+                        nghiệp</option>
                     </select>
                   </div>
                 </div>
@@ -128,7 +133,7 @@
                 <div class="form-group row">
                   <label class="col-sm-3 col-form-label">Ngân hàng</label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm" name="bank_owner" value="{{ $user->bank_owner }}" />
+                    <select id="bank" class="select2 form-select" name="bank"></select>
                   </div>
                 </div>
               </div>
@@ -154,7 +159,7 @@
                 <div class="form-group row">
                   <label class="col-sm-3 col-form-label">Ngày cấp</label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm" name="citizen_id_date" value="{{ $user->citizen_id_date }}" />
+                    <input type="text" class="form-control form-control-sm" name="citizen_id_date" value="{{ $user->citizen_id_date ? \Carbon\Carbon::parse($user->citizen_id_date)->format('Y-m-d') : '' }}" />
                   </div>
                 </div>
               </div>
@@ -192,14 +197,37 @@
 </div>
 @endsection
 @section('script')
-{{-- <script src="https://cdn.tiny.cloud/1/qwtcr3i872yaa31szulgut1hqw3phs4fbtk85daihd9fljcx/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
-  tinymce.init({
-    selector: 'textarea#tinymce-editor', // Replace this CSS selector to match the placeholder element for TinyMCE
-    plugins: 'code table lists fullscreen image emoticons',
-    toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter alignright | indent outdent | bullist numlist | code | table | fullscreen | image | emoticons',
-    height: 600,
-    branding: false
-  });
-</script> --}}
+  $(document).ready(function() {
+      $.ajax({
+        type: "GET",
+        url: "https://provinces.open-api.vn/api/",
+        success: function(response) {
+          let profileCity = '{{ auth()->user()->profile->city_code ?? null }}'
+          let html = '<option value="">-- Chọn --</option>';
+          $.each(response, function(index, item) {
+            html +=
+              `<option value="${item.code}|${item.name}" ${profileCity == item.code ? 'selected' : ''}>${item.name}</option>`;
+          });
+
+          $('#city').html(html);
+        }
+      });
+
+      $.ajax({
+        type: "GET",
+        url: "https://api.vietqr.io/v2/banks",
+        success: function(response) {
+          let profileCity = '{{ auth()->user()->profile->bank_code ?? null }}'
+          let html = '<option value="">-- Chọn --</option>';
+          $.each(response.data, function(index, item) {
+            html +=
+              `<option value="${item.code}|${item.name}" ${profileCity == item.code ? 'selected' : ''}>${item.name}</option>`;
+          });
+
+          $('#bank').html(html);
+        }
+      });
+    });
+</script>
 @endsection

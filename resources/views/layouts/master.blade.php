@@ -183,6 +183,12 @@
               <span class="menu-title">Quét rút</span>
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('users') }}">
+              <i class="mdi mdi-account-group menu-icon"></i>
+              <span class="menu-title">Publisher</span>
+            </a>
+          </li>
         </ul>
       </nav>
       <!-- partial -->
