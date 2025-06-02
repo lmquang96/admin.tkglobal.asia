@@ -11,6 +11,12 @@ use Carbon\Carbon;
 
 class ScanTransaction extends Controller
 {
+    const PAID_MONTH_CAMPAIGN = [
+        1, // Klook - CPS
+        2, // Trip.com - CPS
+        16 // KKday Global - CPS
+    ];
+
     public function index(Request $request) {
         $month = $request->month;
         if (!$month) {
@@ -34,13 +40,23 @@ class ScanTransaction extends Controller
 
     public function scan(Request $request) {
         $month = $request->month;
+        $campaignId = $request->campaignId;
 
-        Transaction::where('target_month', $month)->delete();
+        Transaction::where('target_month', $month)->where('campaign_id', $campaignId)->delete();
 
-        $conversions = Conversion::query()
-        ->whereBetween('order_time', [$month.'-01 00:00:00', $month.'-31 23:59:59'])
-        ->where('status', 'Approved')
-        ->selectRaw('sum(commission_pub) commission_pub, sum(commission_sys) commission_sys, campaign_id, user_id');
+        if (in_array($campaignId, self::PAID_MONTH_CAMPAIGN)) {
+            $orderTimeStart = Carbon::parse($month.'-01 00:00:00')->subMonths(6)->format('Y-m-d h:i:s');
+            $conversions = Conversion::query()
+            ->whereBetween('paid_at', [$month.'-01 00:00:00', $month.'-31 23:59:59'])
+            ->whereBetween('order_time', [$orderTimeStart, $month.'-31 23:59:59'])
+            ->where('status', 'Approved')
+            ->selectRaw('sum(commission_pub) commission_pub, sum(commission_sys) commission_sys, campaign_id, user_id');
+        } else {
+            $conversions = Conversion::query()
+            ->whereBetween('order_time', [$month.'-01 00:00:00', $month.'-31 23:59:59'])
+            ->where('status', 'Approved')
+            ->selectRaw('sum(commission_pub) commission_pub, sum(commission_sys) commission_sys, campaign_id, user_id');
+        }
 
         $conversionsByCampaign = $conversions->groupBy('user_id', 'campaign_id')
         ->get();

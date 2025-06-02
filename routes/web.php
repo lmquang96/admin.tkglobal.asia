@@ -8,6 +8,7 @@ use App\Http\Controllers\Authenticate;
 use App\Http\Controllers\PaymentRequest;
 use App\Http\Controllers\Category;
 use App\Http\Controllers\ScanTransaction;
+use App\Http\Controllers\User;
 
 Route::get('/login', [Authenticate::class, 'login'])->name('login');
 Route::post('/authenticate', [Authenticate::class, 'authenticate'])->name('authenticate');
@@ -48,5 +49,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::prefix('scan-transaction')->group(function (){
     Route::get('/', [ScanTransaction::class, 'index'])->name('scan-transaction');
     Route::post('/scan', [ScanTransaction::class, 'scan'])->name('scan-transaction-scan');
+  });
+
+  Route::prefix('users')->group(function (){
+    Route::get('/', [User::class, 'index'])->name('users');
+    Route::get('/detail', [User::class, 'detail'])->name('user-detail');
   });
 });

@@ -18,6 +18,13 @@
                   </div>
                 </div>
               </div>
+              @if (Auth::user()->id == 9)
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label>Campagin ID</label>
+                  <input type="text" class="form-control form-control-sm" name="campaignId">
+                </div>
+              </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label class="d-block text-white">.</label>
@@ -26,6 +33,7 @@
                   </button>
                 </div>
               </div>
+              @endif
             </div>
           </form>
           @if (!$transaction->isEmpty())
@@ -50,7 +58,9 @@
                   <td>
                     {{ number_format($totalAmountSys, 0, ',', '.') }}
                   </td>
-                  <td></td>
+                  <td>
+                    {{ number_format($totalAmountPub + $totalAmountSys, 0, ',', '.') }}
+                  </td>
                 </tr>
                 @foreach ($transaction as $key => $row)
                 <tr>
@@ -178,6 +188,7 @@
       data: {
         _token: "{{ csrf_token() }}",
         month: $('#monthpicker').val(),
+        campaignId: $("input[name='campaignId']").val()
       },
       success: function (response) {
         setTimeout(() => {

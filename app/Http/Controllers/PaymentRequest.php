@@ -90,7 +90,8 @@ class PaymentRequest extends Controller
       'code' => sha1(time()),
       'target_month' => $request->month,
       'amount' => $request->amount,
-      'user_id' => $userId
+      'user_id' => $userId,
+      'note' => $request->note
     ]);
 
     return response()->json([], 200, []);

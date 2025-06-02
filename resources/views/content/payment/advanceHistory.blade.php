@@ -44,6 +44,7 @@
                   <th> Ngày tạo </th>
                   <th> Trạng thái </th>
                   <th> Ngày cập nhật </th>
+                  <th> Ghi chú </th>
                   <th> Thao tác </th>
                 </tr>
               </thead>
@@ -51,7 +52,7 @@
                 <tr class="table-warning">
                   <td colspan="3"></td>
                   <td>{{ number_format($totalAmount, 0, ',', '.') }}</td>
-                  <td colspan="4"></td>
+                  <td colspan="5"></td>
                 </tr>
                 @foreach ($data as $key => $history)
                 <tr>
@@ -77,6 +78,7 @@
                   </td>
                   <td>{{ $history->status == '1' ? $history->updated_at : 'N/A
                   ' }}</td>
+                  <td>{{ $history->note }}</td>
                   <td>
                     <form class="form-delete-advance-payment" action="{{ route('payment-advance-delete', $history->id) }}" method="POST">
                       @csrf
@@ -118,6 +120,10 @@
           <div class="mb-3">
             <label class="col-form-label">Số tiền tạm ứng</label>
             <input type="number" class="form-control form-control-sm" name="amount">
+          </div>
+          <div class="mb-3">
+            <label class="col-form-label">Ghi chú (nếu có)</label>
+            <textarea class="form-control form-control-sm" name="note" rows="4"></textarea>
           </div>
           <div class="mb-3">
             <button type="submit" class="btn btn-primary">Lưu</button>

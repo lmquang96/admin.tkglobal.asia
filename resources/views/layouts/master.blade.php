@@ -177,14 +177,12 @@
               <span class="menu-title">Tạm ứng</span>
             </a>
           </li>
-          @if (auth()->user()->id == 8)
           <li class="nav-item">
             <a class="nav-link" href="{{ route('scan-transaction') }}">
               <i class="mdi mdi-scale-balance menu-icon"></i>
               <span class="menu-title">Quét rút</span>
             </a>
           </li>
-          @endif
         </ul>
       </nav>
       <!-- partial -->
