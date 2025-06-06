@@ -22,6 +22,7 @@
           <i class="ti-plus btn-icon-prepend" style="font-size: 0.75rem;"></i>Thêm mới
         </a>
         </p>
+        @if (isset($campaigns) && !$campaigns->isEmpty())
         <div class="table-responsive pt-3">
           <table class="table table-bordered table-hover">
             <thead>
@@ -56,6 +57,10 @@
             </tbody>
           </table>
         </div>
+        <x-paginate :paginator="$campaigns" />
+        @else
+        <div class="text-center">Không tìm thấy dữ liệu phù hợp</div>
+        @endif
       </div>
     </div>
   </div>

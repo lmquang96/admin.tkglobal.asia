@@ -50,11 +50,13 @@ class ScanTransaction extends Controller
             ->whereBetween('paid_at', [$month.'-01 00:00:00', $month.'-31 23:59:59'])
             ->whereBetween('order_time', [$orderTimeStart, $month.'-31 23:59:59'])
             ->where('status', 'Approved')
+            ->where('campaign_id', $campaignId)
             ->selectRaw('sum(commission_pub) commission_pub, sum(commission_sys) commission_sys, campaign_id, user_id');
         } else {
             $conversions = Conversion::query()
             ->whereBetween('order_time', [$month.'-01 00:00:00', $month.'-31 23:59:59'])
             ->where('status', 'Approved')
+            ->where('campaign_id', $campaignId)
             ->selectRaw('sum(commission_pub) commission_pub, sum(commission_sys) commission_sys, campaign_id, user_id');
         }
 
@@ -62,10 +64,6 @@ class ScanTransaction extends Controller
         ->get();
 
         $conversionsByUser = $conversions->groupBy('user_id')
-        ->get();
-
-        $advancePayment = AdvancePaymentHistory::where('target_month', $month)
-        ->where('status', 0)
         ->get();
 
         // UPDATE CONVERSIONS STATUS TO PAID
