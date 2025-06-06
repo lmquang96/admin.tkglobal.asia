@@ -38,7 +38,7 @@
             <tbody>
               @foreach ($campaigns as $key => $campaign)
               <tr>
-                <td class="text-center"> {{ $key + $campaign->firstItem() }} </td>
+                <td class="text-center"> {{ $key + $campaigns->firstItem() }} </td>
                 <td> {{ $campaign->name }} </td>
                 <td> {{ $campaign->category->name }} </td>
                 <td> {{ $campaign->commission_text }} </td>
