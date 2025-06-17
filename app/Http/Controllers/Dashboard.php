@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Conversion;
 use App\Models\Click;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Illuminate\Support\Facades\Cache;
 
 class Dashboard extends Controller
@@ -115,8 +116,17 @@ class Dashboard extends Controller
     ->pluck('sumcom', 'time');
 
     $dates = collect();
-    for ($i = 6; $i >= 0; $i--) {
-      $dates->put(Carbon::today()->subDays($i)->toDateString(), 0);
+    // for ($i = 6; $i >= 0; $i--) {
+    //   $dates->put(Carbon::today()->subDays($i)->toDateString(), 0);
+    // }
+
+    $start = Carbon::parse($sDate);
+    $end = Carbon::parse($eDate);
+
+    $period = CarbonPeriod::create($start, $end);
+
+    foreach ($period as $date) {
+      $dates->put($date->toDateString(), 0);
     }
 
     $result = $dates->merge($query)->toArray();
