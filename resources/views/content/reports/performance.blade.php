@@ -25,7 +25,7 @@
                       <button class="btn btn-sm btn-outline-primary dropdown-toggle me-2 btn-group-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-id="campaign_id">Chiến dịch</button>
                       <div class="dropdown-menu">
                         <div class="dropdown-item curs-pointer group-dropdown-item" data-id="user_id">Tài khoản</div>
-                        <div class="dropdown-item curs-pointer group-dropdown-item" data-id="order_time">Ngày tháng</div>
+                        <div class="dropdown-item curs-pointer group-dropdown-item" data-id="order_time">Thời gian</div>
                       </div>
                       <input type="hidden" name="group" value="{{ request('group', 'campaign_id') }}">
                     </div>
@@ -54,13 +54,19 @@
               </div>
             </div>
           </form>
+          <div>
+            <a href="{{ route('report-performance-export', request()->all()) }}" target="_blank" class="btn btn-primary btn-icon-text">
+              <i class="mdi mdi-download"></i>
+              Export
+            </a>
+          </div>
           @if (!$data->isEmpty())
           <div class="table-responsive pt-3">
             <table class="table table-bordered">
               <thead>
                 <tr>
                   <th> # </th>
-                  <th>{{ request('group') == 'user_id' ? 'Tài khoản' : 'Chiến dịch' }}</th>
+                  <th>{{ request('group') == 'user_id' ? 'Tài khoản' : (request('group') == 'order_time' ? 'Thời gian' : 'Chiến dịch') }}</th>
                   <th>Lượt click</th>
                   <th>Chuyển đổi</th>
                   <th>Giá trị chuyển đổi</th>
