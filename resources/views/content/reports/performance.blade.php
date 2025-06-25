@@ -49,7 +49,7 @@
                 <div class="form-group">
                   <label>Tháng đối soát</label>
                   <div class="d-flex">
-                    <input type="text" id="monthpicker" value="{{ request('paid_at') ?? \Carbon\Carbon::now()->format('Y-m') }}" class="form-control form-control-sm" name="paid_at">
+                    <input type="text" id="monthpicker" value="{{ request('paid_at') }}" class="form-control form-control-sm" name="paid_at">
                   </div>
                 </div>
               </div>
