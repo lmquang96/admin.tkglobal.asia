@@ -15,7 +15,11 @@ class ReportService
   {
     try {
       if (!$request->date) {
-        $request->merge(['date' => Carbon::now()->subDays(self::DEFAULT_SUB_DAYS)->format('Y-m-d') . " - " . Carbon::now()->format('Y-m-d')]);
+        if (!$request->paid_at) {
+          $request->merge(['date' => Carbon::now()->subDays(self::DEFAULT_SUB_DAYS)->format('Y-m-d') . " - " . Carbon::now()->format('Y-m-d')]);
+        } else {
+          $request->merge(['date' => Carbon::parse($request->paid_at.'-31')->subMonths(6)->format('Y-m-d') . " - " . Carbon::now()->format('Y-m-d')]);
+        }
       }
 
       if ($request->group == 'campaign_id') {

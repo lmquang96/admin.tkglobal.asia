@@ -47,6 +47,7 @@
                   <th>Số tiền của Pub</th>
                   <th>Số tiền của TK</th>
                   <th>Thời điểm quét</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -58,7 +59,7 @@
                   <td>
                     {{ number_format($totalAmountSys, 0, ',', '.') }}
                   </td>
-                  <td>
+                  <td colspan="2">
                     {{ number_format($totalAmountPub + $totalAmountSys, 0, ',', '.') }}
                   </td>
                 </tr>
@@ -78,6 +79,7 @@
                   <td>{{ number_format($row->amount_pub, 0, ',', '.') }}</td>
                   <td>{{ number_format($row->amount_sys, 0, ',', '.') }}</td>
                   <td>{{ $row->created_at }}</td>
+                  <td><a href="{{ route('report-order', ['status' => 'Paid', 'affiliate_id' => $row->user->profile->affiliate_id, 'paid_at' => request('month')]) }}" style="color: blueviolet;">Xem đơn hàng</a></td>
                 </tr>
                 @endforeach
               </tbody>
