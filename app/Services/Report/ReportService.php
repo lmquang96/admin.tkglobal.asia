@@ -123,6 +123,9 @@ class ReportService
           $q->where('status', $status);
         }
       })
+      ->when($request->paid_at, function ($q, $paid_at) {
+        $q->where('paid_at', 'like', $paid_at . '%');
+      })
       ->selectRaw($groupSelect . ', count(*) cnt, SUM(unit_price) as total_price, SUM(commission_pub) as total_com, SUM(commission_sys) as total_com_sys')
       ->groupBy($group == 'order_time' ? 'date' : $groupSelect);
 
