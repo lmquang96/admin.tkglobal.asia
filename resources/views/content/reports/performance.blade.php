@@ -33,15 +33,24 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-2">
+              <div class="col-md-3">
                 <div class="form-group">
                   <label>Trạng thái</label>
                   <select class="form-select" name="status">
                     <option value="">Tất cả</option>
+                    <option value="Paid" {{ request('status') == 'Paid' ? 'selected' : ''}}>Đã Thanh toán</option>
                     <option value="Approved" {{ request('status') == 'Approved' ? 'selected' : ''}}>Đã duyệt</option>
                     <option value="Pending" {{ request('status') == 'Pending' ? 'selected' : ''}}>Tạm duyệt</option>
                     <option value="Rejected" {{ request('status') == 'Rejected' ? 'selected' : ''}}>Đã hủy</option>
                   </select>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label>Tháng đối soát</label>
+                  <div class="d-flex">
+                    <input type="text" id="monthpicker" value="{{ request('paid_at') ?? \Carbon\Carbon::now()->format('Y-m') }}" class="form-control form-control-sm" name="paid_at">
+                  </div>
                 </div>
               </div>
               <div class="col-md-2">
@@ -147,6 +156,7 @@
 </div>
 @endsection
 @section('script')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.min.js"></script>
 <script>
   $(".group-dropdown-item").click(function(){
     let groupNewText = $(this).html();
@@ -170,6 +180,27 @@
     if (group != $(".btn-group-item").attr('data-id')){
       $(".group-dropdown-item[data-id="+group+"]").click();
     }
+  });
+
+  $.fn.datepicker.dates['vi'] = {
+    days: ["T2", "T3", "T4", "T5", "T6", "T7", "CN"],
+    daysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+    daysMin: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
+    months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+    monthsShort: ["Th 1", "Th 2", "Th 3", "Th 4", "Th 5", "Th 6", "Th 7", "Th 8", "Th 9", "Th 10", "Th 11", "Th 12"],
+    today: "Today",
+    clear: "Clear",
+    format: "mm/dd/yyyy",
+    titleFormat: "MM yyyy", /* Leverages same syntax as 'format' */
+    weekStart: 0
+  };
+
+  $('#monthpicker').datepicker({
+    autoclose: true,
+    minViewMode: 1,
+    format: "yyyy-mm",
+    language: 'vi',
+    defaultDate: new Date(),
   });
 </script>
 @endsection
