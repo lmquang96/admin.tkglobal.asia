@@ -19,4 +19,12 @@ class User extends Controller
 
         return view('content.users.detail', compact('user'));
     }
+
+    public function payable(Request $request, UserService $userService) {
+        $id = $request->id;
+        $payable = $userService->getPayable($id);
+        $user = $userService->getUserById($id);
+
+        return view('content.users.payable', compact('payable', 'user'));
+    }
 }

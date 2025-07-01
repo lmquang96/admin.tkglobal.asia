@@ -4,11 +4,15 @@
 @section('content')
 <div class="content-wrapper">
   <div class="row">
+    <div class="col-12 mb-4">
+      <a href="{{ route('user-detail', ['id' => request('id')]) }}" class="btn {{ request()->route()->getName() == 'user-detail' ? 'btn-primary' : 'btn-secondary' }}" style="border-radius: 4px;">Thông tin tài khoản</a>
+      <a href="{{ route('user-payable', ['id' => request('id')]) }}" class="btn {{ request()->route()->getName() == 'user-payable' ? 'btn-primary' : 'btn-secondary' }}" style="border-radius: 4px;">Lịch sử thanh toán</a>
+    </div>
     <div class="col-12 grid-margin">
       <div class="card">
         <div class="card-body">
           <h4 class="card-title">Thông tin Tài khoản</h4>
-          <form class="form-sample" method="POST" action="{{ route('campaign-store', ['id' => request('id')]) }}">
+          <form class="form-sample" method="POST" action="#">
             @csrf
             <div class="row">
               <div class="col-md-6">
@@ -61,13 +65,14 @@
                   <div class="col-sm-9">
                     <select id="account_type" class="select2 form-select" name="account_type">
                       <option value="Individual"
-                        {{ !empty(auth()->user()->profile->account_type) && auth()->user()->profile->account_type == 'Individual' ? 'selected' : '' }}>
-                        Cá
-                        nhân</option>
+                        {{ !empty($user->profile->account_type) && $user->profile->account_type == 'Individual' ? 'selected' : '' }}>
+                        Cá nhân</option>
                       <option value="Company"
-                        {{ !empty(auth()->user()->profile->account_type) && auth()->user()->profile->account_type == 'Company' ? 'selected' : '' }}>
-                        Doanh
-                        nghiệp</option>
+                        {{ !empty($user->profile->account_type) && $user->profile->account_type == 'Company' ? 'selected' : '' }}>
+                        Doanh nghiệp</option>
+                      <option value="Individual Business"
+                        {{ !empty($user->profile->account_type) && $user->profile->account_type == 'Individual Business' ? 'selected' : '' }}>
+                        Doanh nghiệp Cá Thể</option>
                     </select>
                   </div>
                 </div>

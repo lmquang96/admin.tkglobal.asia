@@ -41,6 +41,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
   Route::prefix('payment')->group(function (){
     Route::get('/request', [PaymentRequest::class, 'index'])->name('payment-request');
+    Route::post('/add-request', [PaymentRequest::class, 'addRequest'])->name('payment-add-request');
     Route::put('/update-status', [PaymentRequest::class, 'changeStatus'])->name('payment-update-status');
     Route::get('/advance-history', [PaymentRequest::class, 'advancePaymentHistory'])->name('payment-advance-history');
     Route::post('/advance-save', [PaymentRequest::class, 'advancePayment'])->name('payment-advance-save');
@@ -55,5 +56,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::prefix('users')->group(function (){
     Route::get('/', [User::class, 'index'])->name('users');
     Route::get('/detail', [User::class, 'detail'])->name('user-detail');
+    Route::get('/payable', [User::class, 'payable'])->name('user-payable');
   });
 });

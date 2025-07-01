@@ -8,6 +8,9 @@
       <div class="card">
         <div class="card-body">
           <h4 class="card-title">Bảng Đăng Ký Rút Tiền</h4>
+          <button class="btn btn-primary mb-2 btn-icon-text btn-sm" data-bs-toggle="modal" data-bs-target="#addAdvancePaymentModal">
+            <i class="ti-plus btn-icon-prepend" style="font-size: 0.75rem;"></i>Thêm thủ công
+          </button>
           {{-- <p class="card-description"> Add class <code>.table-bordered</code></p> --}}
           <form class="form-sample" method="GET" action="{{ route('payment-request') }}">
             <div class="row">
@@ -163,8 +166,49 @@
     </div>
   </div>
 </div>
+<div class="modal fade" id="addAdvancePaymentModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Nhập thông tin rút tiền</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="form-add-payment-request" class="form-sample" method="POST">
+          @csrf
+          <div class="mb-3">
+            <label class="col-form-label">Tháng rút tiền</label>
+            <x-month-picker />
+          </div>
+          <div class="mb-3">
+            <label class="col-form-label">Affiliate ID</label>
+            <input type="text" class="form-control form-control-sm" name="affiliate_id">
+          </div>
+          <div class="mb-3">
+            <label class="col-form-label">Số tiền rút</label>
+            <input type="number" class="form-control form-control-sm" name="amount">
+          </div>
+          <div class="mb-3">
+            <label class="col-form-label">Đợt</label>
+            <select name="comment" class="form-select">
+              <option value="phase 1">1</option>
+              <option value="phase 2">2</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <button type="submit" class="btn btn-primary">Lưu</button>
+          </div>
+        </form>
+      </div>
+      {{-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+        <button type="submit" class="btn btn-primary">Lưu</button>
+      </div> --}}
+    </div>
+  </div>
+</div>
 @endsection
-@section('script')
+@section('script-2')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
@@ -204,6 +248,19 @@
     }).then((result) => {
       if (result.isConfirmed) {
         $(this).unbind('submit').submit();
+      }
+    });
+  });
+
+  $("#form-add-payment-request").submit(function(e) {
+    e.preventDefault();
+    // ajax call
+    $.ajax({
+      type: "POST",
+      url: "{{ route('payment-add-request') }}",
+      data: $(this).serialize(),
+      success: function (response) {
+        window.location.reload();
       }
     });
   });

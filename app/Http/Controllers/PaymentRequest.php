@@ -8,6 +8,7 @@ use App\Models\Balance;
 use App\Models\AdvancePaymentHistory;
 use App\Models\Profile;
 use Carbon\Carbon;
+use App\Services\Payment\PaymentServices;
 
 class PaymentRequest extends Controller
 {
@@ -100,5 +101,11 @@ class PaymentRequest extends Controller
   public function deleteAdvancePayment($id) {
     AdvancePaymentHistory::where('id', $id)->delete();
     return redirect()->back()->with('message', 'Xóa thành công!');
+  }
+
+  public function addRequest(Request $request, PaymentServices $paymentServices) {
+    $paymentServices->addRequest($request);
+
+    return response()->json([], 200, []);
   }
 }

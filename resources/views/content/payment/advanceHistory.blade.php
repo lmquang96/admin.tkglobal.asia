@@ -42,10 +42,10 @@
                   <th> Tháng tạm ứng </th>
                   <th> Số tiền(₫) </th>
                   <th> Ngày tạo </th>
-                  <th> Trạng thái </th>
-                  <th> Ngày cập nhật </th>
+                  {{-- <th> Trạng thái </th>
+                  <th> Ngày cập nhật </th> --}}
                   <th> Ghi chú </th>
-                  <th> Thao tác </th>
+                  {{-- <th> Thao tác </th> --}}
                 </tr>
               </thead>
               <tbody>
@@ -69,7 +69,7 @@
                   <td>{{ $history->target_month }}</td>
                   <td>{{ number_format($history->amount, 0, ',', '.') }}</td>
                   <td>{{ $history->created_at }}</td>
-                  <td>
+                  {{-- <td>
                     @if ($history->status == '1')
                       <span class="badge badge-success me-1">Đã trừ</span>
                     @else
@@ -77,15 +77,15 @@
                     @endif
                   </td>
                   <td>{{ $history->status == '1' ? $history->updated_at : 'N/A
-                  ' }}</td>
+                  ' }}</td> --}}
                   <td>{{ $history->note }}</td>
-                  <td>
+                  {{-- <td>
                     <form class="form-delete-advance-payment" action="{{ route('payment-advance-delete', $history->id) }}" method="POST">
                       @csrf
                       @method('DELETE')
                       <button type="submit" class="btn btn-outline-warning btn-sm">Xóa</button>
                     </form>
-                  </td>
+                  </td> --}}
                 </tr>
                 @endforeach
               </tbody>
