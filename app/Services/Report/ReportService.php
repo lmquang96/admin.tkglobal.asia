@@ -108,16 +108,19 @@ class ReportService
         $dateArray = explode(" - ", $date);
         $q->whereBetween('order_time', [$dateArray[0] . ' 00:00:00', $dateArray[1] . ' 23:59:59']);
       })
-      ->when($request->keyword, function ($q, $keyword) use ($group) {
-        if ($group == 'campaign_id') {
+      ->when($request->keyword, function ($q, $keyword) {
           return $q->whereHas('campaign', function ($query) use ($keyword) {
             $query->where('name', 'like', '%' . $keyword . '%');
           });
-        } else if ($group == 'user_id') {
-          return $q->whereHas('user', function ($query) use ($keyword) {
-            $query->where('name', 'like', '%' . $keyword . '%');
-          });
-        }
+        // if ($group == 'campaign_id') {
+        //   return $q->whereHas('campaign', function ($query) use ($keyword) {
+        //     $query->where('name', 'like', '%' . $keyword . '%');
+        //   });
+        // } else if ($group == 'user_id') {
+        //   return $q->whereHas('user', function ($query) use ($keyword) {
+        //     $query->where('name', 'like', '%' . $keyword . '%');
+        //   });
+        // }
       })
       ->when($request->status, function ($q, $status) {
         if ($status == 'Paid') {
@@ -130,26 +133,40 @@ class ReportService
       ->when($request->paid_at, function ($q, $paid_at) {
         $q->where('paid_at', 'like', $paid_at . '%');
       })
-      ->selectRaw($groupSelect . ', count(*) cnt, SUM(unit_price) as total_price, SUM(commission_pub) as total_com, SUM(commission_sys) as total_com_sys')
+      ->when($request->affiliate_id, function ($q, $affiliate_id) {
+        return $q->whereHas('user.profile', function ($query) use ($affiliate_id) {
+          $query->where('affiliate_id', $affiliate_id);
+        });
+      })
+      ->selectRaw($groupSelect . ", count(*) cnt, SUM(unit_price) as total_price, SUM(commission_pub) as total_com, SUM(commission_sys) as total_com_sys")
       ->groupBy($group == 'order_time' ? 'date' : $groupSelect);
+      // SUM(CASE WHEN status = 'Cancelled' THEN commission_pub ELSE 0 END) as total_com_cancel
 
     return $data;
   }
 
   public function getPerformanceClickQueryBuilderObject($request, $group, $groupSelect)
   {
+    if (in_array($group, ['user_id'])) {
+      $groupSelect = 'link_histories.'.$groupSelect;
+    }
     $clicks = Click::query()
       ->join('link_histories', 'link_histories.id', '=', 'clicks.link_history_id')
-      ->when($group == 'user_id', function ($q) {
-        $q->join('users', 'link_histories.user_id', '=', 'users.id');
-      })
+      // ->when($group == 'user_id', function ($q) {
+      //   $q->join('users', 'link_histories.user_id', '=', 'users.id');
+      // })
+      ->join('users', 'link_histories.user_id', '=', 'users.id')
+      ->join('profiles', 'profiles.user_id', '=', 'users.id')
       ->when($request->date, function ($q, $date) {
         $dateArray = explode(" - ", $date);
         $q->whereBetween('clicks.created_at', [$dateArray[0] . ' 00:00:00', $dateArray[1] . ' 23:59:59']);
       })
       ->when($request->keyword, function ($q, $keyword) {
         return $q->join('campaigns', 'campaigns.id', '=', 'link_histories.campaign_id')
-          ->where('name', 'like', '%' . $keyword . '%');
+          ->where('campaigns.name', 'like', '%' . $keyword . '%');
+      })
+      ->when($request->affiliate_id, function ($q, $affiliate_id) {
+        return $q->where('affiliate_id', $affiliate_id);
       })
       ->where('link_histories.user_id', '!=', 8)
       ->selectRaw($groupSelect . ', count(*) cnt')

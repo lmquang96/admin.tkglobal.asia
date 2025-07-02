@@ -20,7 +20,7 @@ class Report extends Controller
   {
     $group = $request->group;
     if (empty($group)) {
-      $group = 'campaign_id';
+      $group = 'order_time';
     }
     $groupSelect = '';
     if ($group == 'campaign_id') {
@@ -65,7 +65,9 @@ class Report extends Controller
 
     $clicks = $clicks->keyBy($group == 'order_time' ? 'date' : $group)->toArray();
 
-    return view('content.reports.performance', compact('data', 'clicks', 'totalConversion', 'clickCount', 'totalPrice', 'totalCom', 'totalComSys'));
+    $campaigns = Campaign::where('status', 1)->get();
+
+    return view('content.reports.performance', compact('data', 'clicks', 'totalConversion', 'clickCount', 'totalPrice', 'totalCom', 'totalComSys', 'campaigns'));
   }
 
   public function order(Request $request, ReportService $reportService) {

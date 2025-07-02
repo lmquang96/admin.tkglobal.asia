@@ -11,16 +11,16 @@
           {{-- <p class="card-description"> Add class <code>.table-bordered</code></p> --}}
           <form class="form-sample" method="GET" action="{{ route('report-performance') }}">
             <div class="row">
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <div class="form-group">
                   <label>Khoảng ngày</label>
                   <x-date-range-input name="date" date="{{ request('date') }}" />
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <div class="form-group">
                   <label>Nhóm theo</label>
-                  <div class="input-group d-flex align-items-center">
+                  {{-- <div class="input-group d-flex align-items-center">
                     <div class="input-group-prepend">
                       <button class="btn btn-sm btn-outline-primary dropdown-toggle me-2 btn-group-item" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-id="campaign_id">Chiến dịch</button>
                       <div class="dropdown-menu">
@@ -30,7 +30,12 @@
                       <input type="hidden" name="group" value="{{ request('group', 'campaign_id') }}">
                     </div>
                     <input type="text" class="form-control form-control-sm" name="keyword" placeholder="Nhập từ khóa" value="{{ request('keyword') }}" {{ request('group') == 'order_time' ? 'disabled' : ''}}>
-                  </div>
+                  </div> --}}
+                  <select class="form-select" name="group">
+                    <option value="order_time" {{ request('group', 'order_time') == 'order_time' ? 'selected' : ''}}>Thời gian</option>
+                    <option value="campaign_id" {{ request('group', 'order_time') == 'campaign_id' ? 'selected' : ''}}>Chiến dịch</option>
+                    <option value="user_id" {{ request('group', 'order_time') == 'user_id' ? 'selected' : ''}}>Tài khoản</option>
+                  </select>
                 </div>
               </div>
               <div class="col-md-3">
@@ -43,6 +48,25 @@
                     <option value="Pending" {{ request('status') == 'Pending' ? 'selected' : ''}}>Tạm duyệt</option>
                     <option value="Rejected" {{ request('status') == 'Rejected' ? 'selected' : ''}}>Đã hủy</option>
                   </select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Chiến dịch</label>
+                  <input type="text" class="form-control form-control-sm" list="datalistOptions" name="keyword" value="{{ request('keyword') }}">
+                  <datalist id="datalistOptions">
+                    @foreach ($campaigns as $campaign)
+                    <option value="{{ $campaign->name }}">
+                    @endforeach
+                  </datalist>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Affiliate ID</label>
+                  <div class="d-flex">
+                    <input type="text" value="{{ request('affiliate_id') }}" class="form-control form-control-sm" name="affiliate_id">
+                  </div>
                 </div>
               </div>
               <div class="col-md-2">
@@ -98,11 +122,11 @@
                 </tr>
                 @foreach ($data as $key => $row)
                 @php
-                if (request('group', 'campaign_id') == 'user_id') {
+                if (request('group', 'order_time') == 'user_id') {
                   $clickByGroupId = isset($clicks[$row->user_id]) ? $clicks[$row->user_id]['cnt'] : 0;
-                } else if (request('group', 'campaign_id') == 'campaign_id') {
+                } else if (request('group', 'order_time') == 'campaign_id') {
                   $clickByGroupId = isset($clicks[$row->campaign->id]) ? $clicks[$row->campaign->id]['cnt'] : 0;
-                } else if (request('group', 'campaign_id') == 'order_time') {
+                } else if (request('group', 'order_time') == 'order_time') {
                   $clickByGroupId = isset($clicks[$row->date]) ? $clicks[$row->date]['cnt'] : 0;
                 }
                 $groupValue = '';
@@ -110,7 +134,7 @@
                 <tr>
                   <td> {{ $key + 1 }} </td>
                   <td>
-                    @if (request('group', 'campaign_id') == 'user_id')
+                    @if (request('group', 'order_time') == 'user_id')
                     @php
                     $groupValue = $row->user->name;
                     @endphp
@@ -121,12 +145,12 @@
                       <div class="mt-1">
                         <small class="text-primary">{{ $row->user->email }}</small>
                       </div>
-                    @elseif(request('group', 'campaign_id') == 'campaign_id')
+                    @elseif(request('group', 'order_time') == 'campaign_id')
                     @php
                     $groupValue = $row->campaign->name;
                     @endphp
                       {{ $row->campaign->name }}
-                    @elseif(request('group', 'campaign_id') == 'order_time')
+                    @elseif(request('group', 'order_time') == 'order_time')
                       {{ $row->date }}  
                     @endif
                   </td>
@@ -137,7 +161,7 @@
                   <td> {{ number_format($row->total_com_sys, 0, ',', '.') }} </td>
                   <td> {{ number_format($clickByGroupId > 0 ? ($row->cnt / $clickByGroupId) * 100 : 0, 1, ',', '.') }}% </td>
                   <td style="width: 80px;">
-                    <a href="{{ route('report-order', ['groupValue' => $groupValue, 'date' => (request('group', 'campaign_id') == 'order_time' ? $row->date . ' - ' . $row->date : request('date')), 'group' => request('group', 'campaign_id'), 'affiliate_id' => request('group', 'campaign_id') == 'user_id' ? $row->user->profile->affiliate_id : '']) }}" style="color: blueviolet;">
+                    <a href="{{ route('report-order', ['groupValue' => $groupValue, 'date' => (request('group', 'order_time') == 'order_time' ? $row->date . ' - ' . $row->date : request('date')), 'group' => request('group', 'order_time'), 'affiliate_id' => request('affiliate_id'), 'keyword' => request('keyword'), 'status' => request('status'), 'paid_at' => request('paid_at')]) }}" style="color: blueviolet;">
                       Chuyển đổi
                     </a>
                   </td>
