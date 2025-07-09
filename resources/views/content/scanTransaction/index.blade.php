@@ -79,7 +79,7 @@
                   <td>{{ number_format($row->amount_pub, 0, ',', '.') }}</td>
                   <td>{{ number_format($row->amount_sys, 0, ',', '.') }}</td>
                   <td>{{ $row->created_at }}</td>
-                  <td><a href="{{ route('report-order', ['status' => 'Paid', 'affiliate_id' => $row->user->profile->affiliate_id, 'paid_at' => request('month'), 'keyword' => $row->campaign->name]) }}" style="color: blueviolet;">Xem đơn hàng</a></td>
+                  <td><a href="{{ route('report-order', ['status' => 'Paid', 'affiliate_id' => $row->user->profile->affiliate_id, 'paid_at' => request('month', \Carbon\Carbon::now()->format('Y-m')), 'keyword' => $row->campaign->name]) }}" style="color: blueviolet;">Xem đơn hàng</a></td>
                 </tr>
                 @endforeach
               </tbody>
