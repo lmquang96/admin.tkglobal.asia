@@ -65,13 +65,13 @@
                   <div class="col-sm-9">
                     <select id="account_type" class="select2 form-select" name="account_type">
                       <option value="Individual"
-                        {{ !empty($user->profile->account_type) && $user->profile->account_type == 'Individual' ? 'selected' : '' }}>
+                        {{ !empty($userle->account_type) && $user->account_type == 'Individual' ? 'selected' : '' }}>
                         Cá nhân</option>
                       <option value="Company"
-                        {{ !empty($user->profile->account_type) && $user->profile->account_type == 'Company' ? 'selected' : '' }}>
+                        {{ !empty($user->account_type) && $user->account_type == 'Company' ? 'selected' : '' }}>
                         Doanh nghiệp</option>
                       <option value="Individual Business"
-                        {{ !empty($user->profile->account_type) && $user->profile->account_type == 'Individual Business' ? 'selected' : '' }}>
+                        {{ !empty($user->account_type) && $user->account_type == 'Individual Business' ? 'selected' : '' }}>
                         Doanh nghiệp Cá Thể</option>
                     </select>
                   </div>
@@ -101,7 +101,7 @@
               </div>
             </div> --}}
             <div class="row">
-              <div class="col-md-12 text-right">
+              <div class="col-md-12 text-left">
                 <div class="form-group">
                   <input type="submit" class="btn btn-primary" value="Lưu" />
                 </div>
@@ -188,7 +188,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-md-12 text-right">
+              <div class="col-md-12 text-left">
                 <div class="form-group">
                   <input type="submit" class="btn btn-primary" value="Lưu" />
                 </div>
@@ -197,42 +197,154 @@
           </form>
         </div>
       </div>
+      <div class="card mt-6">
+        <div class="card-body">
+          <h4 class="card-title">Ảnh CCCD</h4>
+          @if (empty($user->id_img_front))
+          <form class="form-sample" method="POST" action="{{ route('user-update-id-image') }}" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+            <input type="hidden" name="user_id" value="{{ request('id') }}">
+            <div class="row">
+              <div class="col-6">
+                <h6 class="mb-2">Ảnh mặt trước</h6>
+                <div class="position-relative id-card-upload-wrapper">
+                  <div class="content-center justify-items-center id-card-upload empty">
+                    <img src="https://ecardcutter.go24.info/img/card_front.png" alt="" id="preview-file-front">
+                    <input type="file" name="file_front" class="d-none" accept="image/*">
+                  </div>
+                  <div class="id-card-upload-btn position-absolute top-50 start-50 translate-middle">
+                    <button class="btn btn-primary" id="btn-select-file-front">Chọn ảnh</button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 mb-4">
+                <h6 class="mb-2">Ảnh mặt sau</h6>
+                <div class="position-relative id-card-upload-wrapper">
+                  <div class="content-center justify-items-center id-card-upload empty">
+                    <img src="https://ecardcutter.go24.info/img/card_back.png" alt="" id="preview-file-back">
+                    <input type="file" name="file_back" class="d-none" accept="image/*">
+                  </div>
+                  <div class="id-card-upload-btn position-absolute top-50 start-50 translate-middle">
+                    <button class="btn btn-primary" id="btn-select-file-back">Chọn ảnh</button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12 text-left">
+                <div class="form-group">
+                  <input type="submit" class="btn btn-primary" value="Lưu" />
+                </div>
+              </div>
+            </div>
+          </form>
+          @else
+          <div class="row">
+            <div class="col-6">
+              <h6 class="mb-2">Ảnh mặt trước</h6>
+              <div class="id-card-upload-wrapper">
+                <div class="content-center justify-items-center id-card-upload">
+                  <img src="{{ 'https://tkglobal.asia/' . $user->id_img_front }}" alt="">
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <h6 class="mb-2">Ảnh mặt sau</h6>
+              <div class="id-card-upload-wrapper">
+                <div class="content-center justify-items-center id-card-upload">
+                  <img src="{{ 'https://tkglobal.asia/' . $user->id_img_back }}" alt="">
+                </div>
+              </div>
+            </div>
+          </div>
+          @endif
+        </div>
+      </div>
     </div>
   </div>
 </div>
+<div id="toastify" data-session="{{ session('message') }}"></div>
 @endsection
 @section('script')
 <script>
   $(document).ready(function() {
-      $.ajax({
-        type: "GET",
-        url: "https://provinces.open-api.vn/api/",
-        success: function(response) {
-          let profileCity = '{{ auth()->user()->profile->city_code ?? null }}'
-          let html = '<option value="">-- Chọn --</option>';
-          $.each(response, function(index, item) {
-            html +=
-              `<option value="${item.code}|${item.name}" ${profileCity == item.code ? 'selected' : ''}>${item.name}</option>`;
-          });
+    $.ajax({
+      type: "GET",
+      url: "https://provinces.open-api.vn/api/",
+      success: function(response) {
+        let profileCity = '{{ auth()->user()->profile->city_code ?? null }}'
+        let html = '<option value="">-- Chọn --</option>';
+        $.each(response, function(index, item) {
+          html +=
+            `<option value="${item.code}|${item.name}" ${profileCity == item.code ? 'selected' : ''}>${item.name}</option>`;
+        });
 
-          $('#city').html(html);
-        }
-      });
-
-      $.ajax({
-        type: "GET",
-        url: "https://api.vietqr.io/v2/banks",
-        success: function(response) {
-          let profileCity = '{{ auth()->user()->profile->bank_code ?? null }}'
-          let html = '<option value="">-- Chọn --</option>';
-          $.each(response.data, function(index, item) {
-            html +=
-              `<option value="${item.code}|${item.name}" ${profileCity == item.code ? 'selected' : ''}>${item.name}</option>`;
-          });
-
-          $('#bank').html(html);
-        }
-      });
+        $('#city').html(html);
+      }
     });
+
+    $.ajax({
+      type: "GET",
+      url: "https://api.vietqr.io/v2/banks",
+      success: function(response) {
+        let profileCity = '{{ auth()->user()->profile->bank_code ?? null }}'
+        let html = '<option value="">-- Chọn --</option>';
+        $.each(response.data, function(index, item) {
+          html +=
+            `<option value="${item.code}|${item.name}" ${profileCity == item.code ? 'selected' : ''}>${item.name}</option>`;
+        });
+
+        $('#bank').html(html);
+      }
+    });
+
+    const session = $("#toastify").attr('data-session');
+
+    if (session) {
+      Toastify({
+        text: session,
+        duration: 3000,
+        close: true,
+        stopOnFocus: true,
+        style: {
+          background: "linear-gradient(to right, #00b09b, #96c93d)",
+        },
+        onClick: function(){} // Callback after click
+      }).showToast();
+    }
+  });
+
+  $("#btn-select-file-front").click((e) => {
+    e.preventDefault();
+    $("input[name='file_front']").click();
+  });
+
+  $("#btn-select-file-back").click((e) => {
+    e.preventDefault();
+    $("input[name='file_back']").click();
+  });
+
+  $("input[name='file_front']").change((e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        $('#preview-file-front').attr('src', e.target.result).show();
+      };
+      reader.readAsDataURL(file);
+    } else {
+      $('#preview-file-front').attr('src', 'https://ecardcutter.go24.info/img/card_front.png');
+    }
+  });
+
+  $("input[name='file_back']").change((e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        $('#preview-file-back').attr('src', e.target.result).show();
+      };
+      reader.readAsDataURL(file);
+    }
+  });
 </script>
 @endsection

@@ -57,5 +57,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [User::class, 'index'])->name('users');
     Route::get('/detail', [User::class, 'detail'])->name('user-detail');
     Route::get('/payable', [User::class, 'payable'])->name('user-payable');
+    Route::put('/update-id-image', [User::class, 'updateIdImage'])->name('user-update-id-image');
   });
 });

@@ -3,9 +3,8 @@
 namespace App\Services\User;
 
 use App\Models\User;
-use App\Models\Transaction;
+use App\Models\Profile;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class UserService
@@ -109,5 +108,50 @@ class UserService
     } catch (\Throwable $th) {
       Log::error('Lỗi xảy ra khi select user by id: ' . $th->getMessage());
     }
+  }
+
+  public function uploadIdImage($request) {
+    $client = curl_init();
+
+    $fileFrontPath = $request->file('file_front')->getPathname();
+    $fileBackPath = $request->file('file_back')->getPathname();
+    $userId = $request->user_id;
+
+    $postData = [
+      'file_front' => new \CURLFile($fileFrontPath, $request->file('file_front')->getMimeType(), $request->file('file_front')->getClientOriginalName()),
+      'file_back' => new \CURLFile($fileBackPath, $request->file('file_back')->getMimeType(), $request->file('file_back')->getClientOriginalName()),
+    ];
+
+    curl_setopt_array($client, [
+      CURLOPT_URL => 'https://tkglobal.asia/api/uploadImage',
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_POST => true,
+      CURLOPT_POSTFIELDS => $postData,
+      CURLOPT_FOLLOWLOCATION => true,
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 0,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      // Nếu cần thêm header:
+      CURLOPT_HTTPHEADER => ['Accept: application/json'],
+    ]);
+
+    $response = curl_exec($client);
+    $httpCode = curl_getinfo($client, CURLINFO_HTTP_CODE);
+    curl_close($client);
+
+    // Xử lý kết quả
+    if ($httpCode == 200) {
+      $data = json_decode($response, TRUE);
+
+      $profle = Profile::where('user_id', $userId)->first();
+
+      $profle->id_img_front = $data['front']['path'];
+      $profle->id_img_back = $data['back']['path'];
+      $profle->save();
+
+      return true;
+    }
+
+    return false;
   }
 }

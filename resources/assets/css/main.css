@@ -1,0 +1,20 @@
+.id-card-upload-wrapper .id-card-upload {
+  aspect-ratio: 43 / 27;
+  background-color: #8592a3;
+}
+.id-card-upload-wrapper .id-card-upload img {
+  max-width: 80%;
+  max-height: 90%;
+}
+.id-card-upload-wrapper .id-card-upload-btn {
+  display: none;
+}
+.id-card-upload-wrapper:hover .id-card-upload.empty {
+  filter: brightness(0.5);
+}
+.id-card-upload-wrapper .id-card-upload input {
+  height: 0;
+}
+.id-card-upload-wrapper:hover .id-card-upload-btn {
+  display: block;
+}
