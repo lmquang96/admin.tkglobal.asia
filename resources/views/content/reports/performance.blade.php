@@ -52,6 +52,16 @@
               </div>
               <div class="col-md-3">
                 <div class="form-group">
+                  <label>By business</label>
+                  <select class="form-select" name="by_business">
+                    <option value="">Tất cả</option>
+                    <option value="TKFUNNEL" {{ request('by_business') == 'TKFUNNEL' ? 'selected' : ''}}>TKFUNNEL</option>
+                    <option value="TKGLOBAL" {{ request('by_business') == 'TKGLOBAL' ? 'selected' : ''}}>TKGLOBAL</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
                   <label>Chiến dịch</label>
                   <input type="text" class="form-control form-control-sm" list="datalistOptions" name="keyword" value="{{ request('keyword') }}">
                   <datalist id="datalistOptions">

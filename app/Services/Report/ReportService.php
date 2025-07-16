@@ -48,6 +48,12 @@ class ReportService
             $q->where('status', $status);
           }
         })
+        ->when($request->by_business, function ($q, $by_business) {
+          return $q->whereHas('campaign', function ($query) use ($by_business) {
+            $geo = $by_business == 'TKFUNNEL' ? 'hk' : 'vn';
+            $query->where('geo', $geo);
+          });
+        })
         ->when($request->paid_at, function ($q, $paid_at) {
           $q->where('paid_at', 'like', $paid_at . '%');
         })
@@ -130,6 +136,12 @@ class ReportService
           $q->where('status', $status);
         }
       })
+      ->when($request->by_business, function ($q, $by_business) {
+        return $q->whereHas('campaign', function ($query) use ($by_business) {
+          $geo = $by_business == 'TKFUNNEL' ? 'hk' : 'vn';
+          $query->where('geo', $geo);
+        });
+      })
       ->when($request->paid_at, function ($q, $paid_at) {
         $q->where('paid_at', 'like', $paid_at . '%');
       })
@@ -164,6 +176,11 @@ class ReportService
       ->when($request->keyword, function ($q, $keyword) {
         return $q->join('campaigns', 'campaigns.id', '=', 'link_histories.campaign_id')
           ->where('campaigns.name', 'like', '%' . $keyword . '%');
+      })
+      ->when($request->by_business, function ($q, $by_business) {
+        $geo = $by_business == 'TKFUNNEL' ? 'hk' : 'vn';
+        return $q->join('campaigns', 'campaigns.id', '=', 'link_histories.campaign_id')
+          ->where('campaigns.geo', $geo);
       })
       ->when($request->affiliate_id, function ($q, $affiliate_id) {
         return $q->where('affiliate_id', $affiliate_id);

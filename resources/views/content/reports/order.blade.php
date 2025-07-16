@@ -31,6 +31,16 @@
               </div>
               <div class="col-md-3">
                 <div class="form-group">
+                  <label>By business</label>
+                  <select class="form-select" name="by_business">
+                    <option value="">Tất cả</option>
+                    <option value="TKFUNNEL" {{ request('by_business') == 'TKFUNNEL' ? 'selected' : ''}}>TKFUNNEL</option>
+                    <option value="TKGLOBAL" {{ request('by_business') == 'TKGLOBAL' ? 'selected' : ''}}>TKGLOBAL</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
                   <label>Affiliate ID</label>
                   <input type="text" class="form-control form-control-sm" name="affiliate_id" value="{{ request('affiliate_id') }}">
                 </div>
@@ -98,7 +108,7 @@
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  {{-- <label class="d-block text-white">.</label> --}}
+                  <label class="d-block text-white">.</label>
                   <button type="submit" class="btn btn-primary btn-sm mb-2 btn-icon-text w-full">
                     <i class="ti-filter btn-icon-prepend"></i>Lọc
                   </button>

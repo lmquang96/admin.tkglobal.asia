@@ -89,21 +89,9 @@ class Report extends Controller
 
     $data = $data->orderBy('order_time', 'desc')->paginate(self::PER_PAGE)->withQueryString();
 
-    $clickCount = Click::query()
-    ->join('link_histories', 'link_histories.id', '=', 'clicks.link_history_id')
-    ->when($request->date, function($q, $date) {
-      $dateArray = explode(" - ", $date);
-      $q->whereBetween('clicks.created_at', [$dateArray[0].' 00:00:00', $dateArray[1].' 23:59:59']);
-    })
-    ->when($request->keyword, function($q, $keyword) {
-      return $q->join('campaigns', 'campaigns.id', '=', 'link_histories.campaign_id')
-      ->where('name', 'like', '%'.$keyword.'%');
-    })
-    ->count();
-
     $campaigns = Campaign::where('status', 1)->get();
 
-    return view('content.reports.order', compact('data', 'totalPrice', 'totalCom', 'totalComSys', 'clickCount', 'totalConversion', 'campaigns'));
+    return view('content.reports.order', compact('data', 'totalPrice', 'totalCom', 'totalComSys', 'totalConversion', 'campaigns'));
   }
 
   public function exportReportOrder(Request $request) 
