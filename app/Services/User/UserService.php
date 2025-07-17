@@ -87,7 +87,7 @@ class UserService
         FROM payment_requests
         WHERE user_id = $id
           AND processing_date IS NOT NULL
-          AND STATUS = 0
+          AND STATUS = 2
         
         UNION ALL
         
