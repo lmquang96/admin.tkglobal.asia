@@ -11,6 +11,16 @@
           <x-date-range-input name="dashboard_date" date="{{ request('date') }}" autoApply="0" />
         </div>
       </div>
+      <div class="col-md-2">
+        <div class="form-group">
+          <label>By business</label>
+          <select class="form-select" name="by_business" id="by_business">
+            <option value="">Tất cả</option>
+            <option value="TKFUNNEL" {{ request('by_business') == 'TKFUNNEL' ? 'selected' : ''}}>TKFUNNEL</option>
+            <option value="TKGLOBAL" {{ request('by_business') == 'TKGLOBAL' ? 'selected' : ''}}>TKGLOBAL</option>
+          </select>
+        </div>
+      </div>
     </div>
   </form>
   {{-- <div class="row">
@@ -733,6 +743,11 @@
 @endsection
 @section('script')
 <script>
-
+$("#by_business").change(function (e) { 
+  e.preventDefault();
+  let url = new URL(window.location.href);
+  url.searchParams.set('by_business', $(this).val());
+  window.location.href = url.toString();
+});
 </script>
 @endsection

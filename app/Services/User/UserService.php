@@ -4,6 +4,7 @@ namespace App\Services\User;
 
 use App\Models\User;
 use App\Models\Profile;
+use App\Models\Conversion;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 
@@ -153,5 +154,22 @@ class UserService
     }
 
     return false;
+  }
+
+  function getTopAffiliates($sDate, $eDate, $byBusiness) {
+    return Conversion::query()
+    ->join('users', 'users.id' , '=', 'conversions.user_id')
+    ->join('profiles', 'users.id', '=', 'profiles.user_id')
+    ->when($byBusiness && !empty($byBusiness), function($q) use($byBusiness) {
+      $geo = $byBusiness == 'TKFUNNEL' ? 'hk' : 'vn';
+        return $q->join('campaigns', 'campaigns.id', '=', 'conversions.campaign_id')
+      ->where('geo', $geo);
+    })
+    ->selectRaw('email, affiliate_id, sum(commission_pub) as sumcom')
+    ->whereBetween('order_time', [$sDate.' 00:00:00', $eDate.' 23:59:59'])
+    ->groupBy('email', 'affiliate_id')
+    ->orderByDesc('sumcom')
+    ->limit(6)
+    ->get();
   }
 }

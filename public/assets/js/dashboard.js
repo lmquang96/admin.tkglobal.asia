@@ -2,6 +2,7 @@
   'use strict';
   $(function() {
     const dateQuery = (new URL(location.href)).searchParams.get('date');
+    const byBusinessQuery = (new URL(location.href)).searchParams.get('by_business');
     if ($("#order-chart").length) {
       const ctx = document.getElementById('order-chart');
       new Chart(ctx, {
@@ -81,7 +82,8 @@
       type: "GET",
       url: "/data-chart",
       data: {
-        date: dateQuery
+        date: dateQuery,
+        by_business: byBusinessQuery
       },
       success: function (response) {
         if (response.status == 200) {

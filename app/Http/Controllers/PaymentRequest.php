@@ -22,7 +22,7 @@ class PaymentRequest extends Controller
     ->when($request->status, function($q, $status) {
       $q->where('status', $status);
     })
-    ->when($request->account_type, function($q, $account_type) {
+    ->when($request->by_business, function($q, $account_type) {
       $q->where('profiles.account_type', $account_type);
     });
 

@@ -12,10 +12,20 @@
             <div class="row">
               <div class="col-md-2">
                 <div class="form-group">
-                  <label>Khoảng ngày</label>
+                  <label>Tháng</label>
                   <div class="d-flex">
                     <input type="text" id="monthpicker" value="{{ request('month') ?? \Carbon\Carbon::now()->format('Y-m') }}" class="form-control form-control-sm" name="month">
                   </div>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label>By business</label>
+                  <select class="form-select" name="by_business" id="by_business">
+                    <option value="">Tất cả</option>
+                    <option value="TKFUNNEL" {{ request('by_business') == 'TKFUNNEL' ? 'selected' : ''}}>TKFUNNEL</option>
+                    <option value="TKGLOBAL" {{ request('by_business') == 'TKGLOBAL' ? 'selected' : ''}}>TKGLOBAL</option>
+                  </select>
                 </div>
               </div>
               @if (Auth::user()->id == 8)
@@ -220,6 +230,13 @@
     e.preventDefault();
     let url = new URL(window.location.href);
     url.searchParams.set('month', $(this).val());
+    window.location.href = url.toString();
+  });
+
+  $("#by_business").change(function (e) { 
+    e.preventDefault();
+    let url = new URL(window.location.href);
+    url.searchParams.set('by_business', $(this).val());
     window.location.href = url.toString();
   });
 </script>

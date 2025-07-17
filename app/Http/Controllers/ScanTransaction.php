@@ -23,7 +23,12 @@ class ScanTransaction extends Controller
             $month = Carbon::now()->format('Y-m');
         }
 
-        $transaction = Transaction::where('target_month', $month);
+        $transaction = Transaction::where('target_month', $month)
+        ->when($request->by_business, function($q, $by_business) {
+            $geo = $by_business == 'TKFUNNEL' ? 'hk' : 'vn';
+            return $q->join('campaigns', 'campaigns.id', '=', 'transactions.campaign_id')
+          ->where('geo', $geo);
+        });
 
         $totalAmountPub = $transaction->get()->sum(function ($item) {
             return $item->amount_pub;
