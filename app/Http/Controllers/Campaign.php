@@ -21,7 +21,11 @@ class Campaign extends Controller
   public function create() {
     $categories = Category::where('status', 1)->get();
 
-    return view('content.campaigns.create', compact('categories'));
+    $trafficRules = 'Cashback, Direct Linking, Email Marketing, Incentived traffic / Loyalty, Pop up, Popunder & Tabunder, Search Engine Marketing, Social Messenger App, Coupon & Discount Codes, Display Banner, Extension & Software, Push Notification, Sub-network, Seeding community, Adult/Pornographic, Gambling, Brand bidding';
+
+    $trafficRules = explode(', ', $trafficRules);
+
+    return view('content.campaigns.create', compact('categories', 'trafficRules'));
   }
 
   public function store(Request $request) {

@@ -168,13 +168,135 @@
             </div> --}}
             <div class="row">
               <div class="col-12">
-                <div class="form-group row">
-                  <label class="col-sm-1-5 col-form-label">Nội dung</label>
-                  <div class="col-sm-10-5">
-                    <textarea class="form-control" name="detail" id="tinymce-editor">
-                      
-                    </textarea>
+                <div class="form-group">
+                  <label for="tinymce-editor">Brand infomation</label>
+                  <textarea class="form-control" name="detail" id="tinymce-editor"></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <div class="form-group">
+                  <label for="tinymce-editor" class="font-bold">Traffic Rule</label>
+                  <h6 class="text-sm">Được chấp thuận</h6>
+                  <div class="row mb-4">
+                    @foreach ($trafficRules as $rule)
+                    <div class="col-sm-3">
+                      <div class="form-check form-check-success">
+                        <label class="form-check-label">
+                          <input type="checkbox" class="form-check-input allowed" value="{{ $rule }}">
+                          {{ $rule }}
+                        <i class="input-helper"></i></label>
+                      </div>
+                    </div>
+                    @endforeach
                   </div>
+                  <h6 class="text-sm">Không được chấp thuận</h6>
+                  <div class="row">
+                    @foreach ($trafficRules as $rule)
+                    <div class="col-sm-3">
+                      <div class="form-check form-check-danger">
+                        <label class="form-check-label">
+                          <input type="checkbox" class="form-check-input not-allowed" value="{{ $rule }}">
+                          {{ $rule }}
+                        <i class="input-helper"></i></label>
+                      </div>
+                    </div>
+                    @endforeach
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <label class="col-sm-3 col-form-label">GEO</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control form-control-sm" name="tracking_url" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <label class="col-sm-3 col-form-label">Service</label>
+                  <div class="col-sm-9">
+                    <div class="form-check">
+                      <label class="form-check-label">
+                      <select class="form-select form-select-sm" name="category_id">
+                        <option value="cps">CPS</option>
+                        <option value="cps">CPA</option>
+                        <option value="cps">CPQL</option>
+                        <option value="cps">CPL</option>
+                        <option value="cps">CPR</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <label class="col-sm-3 col-form-label">Device</label>
+                  <div class="col-sm-9">
+                    <div class="row">
+                      <div class="col-sm-4">
+                        <div class="form-check form-check-success">
+                          <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input not-allowed" value="Mobile">
+                            Mobile
+                          <i class="input-helper"></i></label>
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="form-check form-check-success">
+                          <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input not-allowed" value="Mobile">
+                            Desktop
+                          <i class="input-helper"></i></label>
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="form-check form-check-success">
+                          <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input not-allowed" value="Mobile">
+                            Tablet
+                          <i class="input-helper"></i></label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <label class="col-sm-3 col-form-label">OS</label>
+                  <div class="col-sm-9">
+                    <div class="form-check">
+                      <label class="form-check-label">
+                      <select class="form-select form-select-sm" name="category_id">
+                        <option value="cps">Tất cả</option>
+                        <option value="cps">Android</option>
+                        <option value="cps">IOS</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <div class="form-group">
+                  <label for="tinymce-editor">Conversion Flow</label>
+                  <textarea class="form-control" name="detail" id="tinymce-editor"></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <div class="form-group">
+                  <label for="tinymce-editor">General Terms</label>
+                  <textarea class="form-control" name="detail" id="tinymce-editor"></textarea>
                 </div>
               </div>
             </div>
@@ -199,8 +321,23 @@
     selector: 'textarea#tinymce-editor', // Replace this CSS selector to match the placeholder element for TinyMCE
     plugins: 'code table lists fullscreen image emoticons',
     toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter alignright | indent outdent | bullist numlist | code | table | fullscreen | image | emoticons',
-    height: 600,
+    height: 300,
     branding: false
+  });
+
+  $(document).ready(function() {
+    function syncCheckboxes(sourceClass, targetClass) {
+      $(`.${sourceClass}`).on('change', function() {
+        const value = $(this).val();
+        const isChecked = $(this).is(':checked');
+
+        $(`.${targetClass}[value="${value}"]`).prop('disabled', isChecked);
+      });
+    }
+
+    // Sync cả 2 chiều
+    syncCheckboxes('allowed', 'not-allowed');
+    syncCheckboxes('not-allowed', 'allowed');
   });
 </script>
 @endsection

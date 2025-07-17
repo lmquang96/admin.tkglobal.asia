@@ -85,7 +85,7 @@
                 </tr>
                 @foreach ($paymentRequests as $key => $paymentRequest)
                 @php
-                $taxValue = $paymentRequest->amount > 2000000 ? $paymentRequest->amount * 0.1 : 0;
+                $taxValue = ($paymentRequest->amount > 2000000 && $paymentRequest->account_type != 'Company') ? $paymentRequest->amount * 0.1 : 0;
                 @endphp
                 <tr>
                   <td>{{ $key + 1 }}</td>

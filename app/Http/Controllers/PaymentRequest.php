@@ -31,7 +31,7 @@ class PaymentRequest extends Controller
     $totalAmount = $paymentRequests->sum('amount');
 
     $totalTax = $paymentRequests->get()->sum(function ($item) {
-      return $item->amount > 2000000 ? $item->amount * 0.1 : 0;
+      return ($item->amount > 2000000 && $item->account_type != 'Company') ? $item->amount * 0.1 : 0;
     });
 
     $paymentRequests = $paymentRequests->get();
