@@ -77,12 +77,9 @@
               </div>
               <div class="col-md-6">
                 <div class="form-group row">
-                  <label class="col-sm-3 col-form-label">Loại chiến dịch</label>
-                  <div class="col-sm-4">
-                    <div class="form-check">
-                      <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="cp_type" id="cp_type" value="CPS" checked> CPS </label>
-                    </div>
+                  <label class="col-sm-3 col-form-label">Link tracking</label>
+                  <div class="col-sm-9">
+                    <input type="text" class="form-control form-control-sm" name="tracking_url" />
                   </div>
                 </div>
               </div>
@@ -144,16 +141,6 @@
                 </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group row">
-                  <label class="col-sm-3 col-form-label">Link tracking</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm" name="tracking_url" />
-                  </div>
-                </div>
-              </div>
-            </div>
             {{-- <div class="row">
               <div class="col-12">
                 <div class="form-group row">
@@ -184,7 +171,7 @@
                     <div class="col-sm-3">
                       <div class="form-check form-check-success">
                         <label class="form-check-label">
-                          <input type="checkbox" class="form-check-input allowed" value="{{ $rule }}">
+                          <input type="checkbox" class="form-check-input allowed" name="allowed_rule[]" value="{{ $rule }}">
                           {{ $rule }}
                         <i class="input-helper"></i></label>
                       </div>
@@ -197,7 +184,7 @@
                     <div class="col-sm-3">
                       <div class="form-check form-check-danger">
                         <label class="form-check-label">
-                          <input type="checkbox" class="form-check-input not-allowed" value="{{ $rule }}">
+                          <input type="checkbox" class="form-check-input not-allowed" name="not_allowed_rule[]" value="{{ $rule }}">
                           {{ $rule }}
                         <i class="input-helper"></i></label>
                       </div>
@@ -212,7 +199,7 @@
                 <div class="form-group row">
                   <label class="col-sm-3 col-form-label">GEO</label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm" name="tracking_url" />
+                    <input type="text" class="form-control form-control-sm" name="display_geo" />
                   </div>
                 </div>
               </div>
@@ -222,12 +209,12 @@
                   <div class="col-sm-9">
                     <div class="form-check">
                       <label class="form-check-label">
-                      <select class="form-select form-select-sm" name="category_id">
-                        <option value="cps">CPS</option>
-                        <option value="cps">CPA</option>
-                        <option value="cps">CPQL</option>
-                        <option value="cps">CPL</option>
-                        <option value="cps">CPR</option>
+                      <select class="form-select form-select-sm" name="cp_type">
+                        <option value="CPS">CPS</option>
+                        <option value="CPA">CPA</option>
+                        <option value="CPQL">CPQL</option>
+                        <option value="CPL">CPL</option>
+                        <option value="CPR">CPR</option>
                       </select>
                     </div>
                   </div>
@@ -243,7 +230,7 @@
                       <div class="col-sm-4">
                         <div class="form-check form-check-success">
                           <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input not-allowed" value="Mobile">
+                            <input type="checkbox" class="form-check-input not-allowed" name="device[]" value="Mobile">
                             Mobile
                           <i class="input-helper"></i></label>
                         </div>
@@ -251,7 +238,7 @@
                       <div class="col-sm-4">
                         <div class="form-check form-check-success">
                           <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input not-allowed" value="Mobile">
+                            <input type="checkbox" class="form-check-input not-allowed" name="device[]" value="Desktop">
                             Desktop
                           <i class="input-helper"></i></label>
                         </div>
@@ -259,7 +246,7 @@
                       <div class="col-sm-4">
                         <div class="form-check form-check-success">
                           <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input not-allowed" value="Mobile">
+                            <input type="checkbox" class="form-check-input not-allowed" name="device[]" value="Tablet">
                             Tablet
                           <i class="input-helper"></i></label>
                         </div>
@@ -274,10 +261,10 @@
                   <div class="col-sm-9">
                     <div class="form-check">
                       <label class="form-check-label">
-                      <select class="form-select form-select-sm" name="category_id">
-                        <option value="cps">Tất cả</option>
-                        <option value="cps">Android</option>
-                        <option value="cps">IOS</option>
+                      <select class="form-select form-select-sm" name="os">
+                        <option value="All">Tất cả</option>
+                        <option value="Android">Android</option>
+                        <option value="IOS">IOS</option>
                       </select>
                     </div>
                   </div>
@@ -288,7 +275,15 @@
               <div class="col-12">
                 <div class="form-group">
                   <label for="tinymce-editor">Conversion Flow</label>
-                  <textarea class="form-control" name="detail" id="tinymce-editor"></textarea>
+                  <textarea class="form-control" name="conversion_flow" id="conversion-flow"></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <div class="form-group">
+                  <label for="tinymce-editor">Commission Structure</label>
+                  <textarea class="form-control" name="commission_structure" id="commission-structure"></textarea>
                 </div>
               </div>
             </div>
@@ -296,7 +291,7 @@
               <div class="col-12">
                 <div class="form-group">
                   <label for="tinymce-editor">General Terms</label>
-                  <textarea class="form-control" name="detail" id="tinymce-editor"></textarea>
+                  <textarea class="form-control" name="terms" id="terms"></textarea>
                 </div>
               </div>
             </div>
@@ -319,6 +314,30 @@
 <script>
   tinymce.init({
     selector: 'textarea#tinymce-editor', // Replace this CSS selector to match the placeholder element for TinyMCE
+    plugins: 'code table lists fullscreen image emoticons',
+    toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter alignright | indent outdent | bullist numlist | code | table | fullscreen | image | emoticons',
+    height: 300,
+    branding: false
+  });
+
+  tinymce.init({
+    selector: 'textarea#conversion-flow', // Replace this CSS selector to match the placeholder element for TinyMCE
+    plugins: 'code table lists fullscreen image emoticons',
+    toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter alignright | indent outdent | bullist numlist | code | table | fullscreen | image | emoticons',
+    height: 300,
+    branding: false
+  });
+
+  tinymce.init({
+    selector: 'textarea#commission-structure', // Replace this CSS selector to match the placeholder element for TinyMCE
+    plugins: 'code table lists fullscreen image emoticons',
+    toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter alignright | indent outdent | bullist numlist | code | table | fullscreen | image | emoticons',
+    height: 300,
+    branding: false
+  });
+
+  tinymce.init({
+    selector: 'textarea#terms', // Replace this CSS selector to match the placeholder element for TinyMCE
     plugins: 'code table lists fullscreen image emoticons',
     toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter alignright | indent outdent | bullist numlist | code | table | fullscreen | image | emoticons',
     height: 300,

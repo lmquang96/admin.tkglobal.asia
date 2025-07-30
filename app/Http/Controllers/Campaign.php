@@ -29,23 +29,33 @@ class Campaign extends Controller
   }
 
   public function store(Request $request) {
+    // dd($request->all());
+
     $campaign = new CampaignModel();
 
     // dd($request->all());
 
     $campaign->name = $request->name;
     $campaign->code = sha1(time());
-    $campaign->cp_type = $request->cp_type;
-    $campaign->commission_type = $request->commission_type;
-    $campaign->commission_text = $request->commission_text;
-    $campaign->commission = $request->commission;
-    $campaign->status = $request->status;
-    $campaign->category_id = $request->category_id;
-    $campaign->url = $request->url;
-    $campaign->tracking_url = $request->tracking_url;
-    $campaign->detail = $request->detail;
     $campaign->image = $request->image;
     $campaign->image_square = $request->image_square;
+    $campaign->category_id = $request->category_id;
+    $campaign->tracking_url = $request->tracking_url;
+    $campaign->commission = $request->commission;
+    $campaign->commission_type = $request->commission_type;
+    $campaign->commission_text = $request->commission_text;
+    $campaign->status = $request->status;
+    $campaign->url = $request->url;
+    $campaign->detail = $request->detail;
+    $campaign->allowed_rule = json_encode($request->allowed_rule);
+    $campaign->not_allowed_rule = json_encode($request->not_allowed_rule);
+    $campaign->display_geo = $request->display_geo;
+    $campaign->cp_type = $request->cp_type;
+    $campaign->device = json_encode($request->device);
+    $campaign->os = $request->os;
+    $campaign->conversion_flow = $request->conversion_flow;
+    $campaign->commission_structure = $request->commission_structure;
+    $campaign->terms = $request->terms;
 
     try {
       $campaign->save();
@@ -67,9 +77,19 @@ class Campaign extends Controller
 
     $campaignDetail = CampaignModel::find($id);
 
+    $allowedRule = json_decode($campaignDetail->allowed_rule, TRUE);
+
+    $notAllowedRule = json_decode($campaignDetail->not_allowed_rule, TRUE);
+
+    $devices = json_decode($campaignDetail->device, TRUE);
+
     $categories = Category::where('status', 1)->get();
 
-    return view('content.campaigns.edit', compact('campaignDetail', 'categories'));
+    $trafficRules = 'Cashback, Direct Linking, Email Marketing, Incentived traffic / Loyalty, Pop up, Popunder & Tabunder, Search Engine Marketing, Social Messenger App, Coupon & Discount Codes, Display Banner, Extension & Software, Push Notification, Sub-network, Seeding community, Adult/Pornographic, Gambling, Brand bidding';
+
+    $trafficRules = explode(', ', $trafficRules);
+
+    return view('content.campaigns.edit', compact('campaignDetail', 'categories', 'trafficRules', 'allowedRule', 'notAllowedRule', 'devices'));
   }
 
   public function update(Request $request) {
@@ -78,15 +98,24 @@ class Campaign extends Controller
     $campaign = CampaignModel::find($id);
 
     $campaign->name = $request->name;
-    $campaign->cp_type = $request->cp_type;
+    $campaign->category_id = $request->category_id;
+    $campaign->tracking_url = $request->tracking_url;
+    $campaign->commission = $request->commission;
     $campaign->commission_type = $request->commission_type;
     $campaign->commission_text = $request->commission_text;
+    $campaign->cp_type = $request->cp_type;
     $campaign->status = $request->status;
-    $campaign->category_id = $request->category_id;
     $campaign->url = $request->url;
-    $campaign->tracking_url = $request->tracking_url;
     $campaign->detail = $request->detail;
-    $campaign->commission = $request->commission;
+    $campaign->allowed_rule = json_encode($request->allowed_rule);
+    $campaign->not_allowed_rule = json_encode($request->not_allowed_rule);
+    $campaign->display_geo = $request->display_geo;
+    $campaign->cp_type = $request->cp_type;
+    $campaign->device = json_encode($request->device);
+    $campaign->os = $request->os;
+    $campaign->conversion_flow = $request->conversion_flow;
+    $campaign->commission_structure = $request->commission_structure;
+    $campaign->terms = $request->terms;
 
     try {
       $campaign->save();
