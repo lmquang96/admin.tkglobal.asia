@@ -185,7 +185,7 @@
                     <div class="col-sm-3">
                       <div class="form-check form-check-success">
                         <label class="form-check-label">
-                          <input type="checkbox" class="form-check-input allowed" name="allowed_rule[]" value="{{ $rule }}" {{ (in_array($rule, $allowedRule)) ? "checked" : (!empty($rule) && in_array($rule, $notAllowedRule) ? 'disabled' : '') }}>
+                          <input type="checkbox" class="form-check-input allowed" name="allowed_rule[]" value="{{ $rule }}" {{ ($allowedRule && in_array($rule, $allowedRule)) ? "checked" : ($notAllowedRule && in_array($rule, $notAllowedRule) ? 'disabled' : '') }}>
                           {{ $rule }}
                         <i class="input-helper"></i></label>
                       </div>
