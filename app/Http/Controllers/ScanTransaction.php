@@ -33,7 +33,7 @@ class ScanTransaction extends Controller
         $totalAmountPub = $transaction->get()->sum(function ($item) {
             return $item->amount_pub;
         });
-    
+
         $totalAmountSys = $transaction->get()->sum(function ($item) {
             return $item->amount_sys;
         });
@@ -47,7 +47,7 @@ class ScanTransaction extends Controller
         $month = $request->month;
         $campaignId = $request->campaignId;
 
-        Transaction::where('target_month', $month)->where('campaign_id', $campaignId)->delete();
+        // Transaction::where('target_month', $month)->where('campaign_id', $campaignId)->delete();
 
         if (in_array($campaignId, self::PAID_MONTH_CAMPAIGN)) {
             $orderTimeStart = Carbon::parse($month.'-01 00:00:00')->subMonths(6)->format('Y-m-d h:i:s');
@@ -56,6 +56,7 @@ class ScanTransaction extends Controller
             ->whereBetween('order_time', [$orderTimeStart, $month.'-31 23:59:59'])
             ->where('status', 'Approved')
             ->where('campaign_id', $campaignId)
+            ->whereNull('comment')
             ->selectRaw('sum(commission_pub) commission_pub, sum(commission_sys) commission_sys, campaign_id, user_id');
         } else {
             $conversions = Conversion::query()
@@ -104,7 +105,7 @@ class ScanTransaction extends Controller
                 ]);
             }
         }
-        
+
         return response()->json($conversions, 200);
     }
 }
