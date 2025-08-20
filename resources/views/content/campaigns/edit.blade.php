@@ -252,7 +252,7 @@
                       <div class="col-sm-4">
                         <div class="form-check form-check-success">
                           <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input not-allowed" name="device[]" value="Desktop" {{ in_array('Desktop', $devices) ? 'checked' : '' }}>
+                            <input type="checkbox" class="form-check-input not-allowed" name="device[]" value="Desktop" {{ ($devices && in_array('Desktop', $devices)) ? 'checked' : '' }}>
                             Desktop
                           <i class="input-helper"></i></label>
                         </div>
@@ -260,7 +260,7 @@
                       <div class="col-sm-4">
                         <div class="form-check form-check-success">
                           <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input not-allowed" name="device[]" value="Tablet" {{ in_array('Tablet', $devices) ? 'checked' : '' }}>
+                            <input type="checkbox" class="form-check-input not-allowed" name="device[]" value="Tablet" {{ ($devices && in_array('Tablet', $devices)) ? 'checked' : '' }}>
                             Tablet
                           <i class="input-helper"></i></label>
                         </div>
