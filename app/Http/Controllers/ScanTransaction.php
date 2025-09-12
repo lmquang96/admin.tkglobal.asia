@@ -14,7 +14,8 @@ class ScanTransaction extends Controller
     const PAID_MONTH_CAMPAIGN = [
         1, // Klook - CPS
         2, // Trip.com - CPS
-        16 // KKday Global - CPS
+        16, // KKday Global - CPS
+        31 // Trip.com - CPS private
     ];
 
     public function index(Request $request) {
@@ -47,7 +48,7 @@ class ScanTransaction extends Controller
         $month = $request->month;
         $campaignId = $request->campaignId;
 
-        // Transaction::where('target_month', $month)->where('campaign_id', $campaignId)->delete();
+        Transaction::where('target_month', $month)->where('campaign_id', $campaignId)->delete();
 
         if (in_array($campaignId, self::PAID_MONTH_CAMPAIGN)) {
             $orderTimeStart = Carbon::parse($month.'-01 00:00:00')->subMonths(6)->format('Y-m-d h:i:s');
@@ -56,7 +57,7 @@ class ScanTransaction extends Controller
             ->whereBetween('order_time', [$orderTimeStart, $month.'-31 23:59:59'])
             ->where('status', 'Approved')
             ->where('campaign_id', $campaignId)
-            ->whereNull('comment')
+            // ->where('comment', 'payment t9')
             ->selectRaw('sum(commission_pub) commission_pub, sum(commission_sys) commission_sys, campaign_id, user_id');
         } else {
             $conversions = Conversion::query()
