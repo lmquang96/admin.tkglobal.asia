@@ -28,7 +28,8 @@ class ScanTransaction extends Controller
         ->when($request->by_business, function($q, $by_business) {
             $geo = $by_business == 'TKFUNNEL' ? 'hk' : 'vn';
             return $q->join('campaigns', 'campaigns.id', '=', 'transactions.campaign_id')
-          ->where('geo', $geo);
+            ->select('transactions.*', 'campaigns.*', 'transactions.created_at')
+            ->where('geo', $geo);
         });
 
         $totalAmountPub = $transaction->get()->sum(function ($item) {
