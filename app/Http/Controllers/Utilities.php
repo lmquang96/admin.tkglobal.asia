@@ -70,13 +70,32 @@ class Utilities extends Controller
     }
 
     try {
-      Conversion::insert($insertData);
+      foreach ($insertData as $item) {
+        Conversion::upsert(
+          [
+            $item
+          ],
+          [
+            'campaign_id',
+            'order_code',
+            'product_code',
+          ],
+          [
+            'unit_price',
+            'quantity',
+            'commission_pub',
+            'commission_sys',
+            'updated_at',
+          ]
+        );
+      }
+      // Conversion::insert($insertData);
 
-      Conversion::removeDup(
-        $campaginId,
-        Carbon::now()->subDays(120)->format('Y-m-d'),
-        Carbon::now()->format('Y-m-d')
-      );
+      // Conversion::removeDup(
+      //   $campaginId,
+      //   Carbon::now()->subDays(120)->format('Y-m-d'),
+      //   Carbon::now()->format('Y-m-d')
+      // );
 
       return response()->json([
         'status' => 200,
