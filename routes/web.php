@@ -9,6 +9,7 @@ use App\Http\Controllers\PaymentRequest;
 use App\Http\Controllers\Category;
 use App\Http\Controllers\ScanTransaction;
 use App\Http\Controllers\User;
+use App\Http\Controllers\Utilities;
 
 Route::get('/login', [Authenticate::class, 'login'])->name('login');
 Route::post('/authenticate', [Authenticate::class, 'authenticate'])->name('authenticate');
@@ -58,5 +59,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/detail', [User::class, 'detail'])->name('user-detail');
     Route::get('/payable', [User::class, 'payable'])->name('user-payable');
     Route::put('/update-id-image', [User::class, 'updateIdImage'])->name('user-update-id-image');
+  });
+
+  Route::prefix('utilities/')->group(function (){
+    Route::get('/', [Utilities::class, 'view'])->name('utilities-view');
+    Route::post('/shopee-upload', [Utilities::class, 'shopeeUpload'])->name('utilities-shopee-upload');
   });
 });

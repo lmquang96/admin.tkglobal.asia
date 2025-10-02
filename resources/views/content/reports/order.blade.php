@@ -135,6 +135,7 @@
                   <th>ID đơn hàng</th>
                   <th>Mã sản phẩm</th>
                   <th>Tên sản phẩm</th>
+                  <th>Số Lượng</th>
                   <th>Giá trị đơn hàng(₫)</th>
                   <th>Hoa hồng Pub(₫)</th>
                   <th>Hoa hồng TK(₫)</th>
@@ -150,6 +151,7 @@
               <tbody>
                 <tr class="table-warning">
                   <td colspan="8" class="text-left">Tổng ({{ number_format($totalConversion, 0, ',', '.') }})</td>
+                  <td>{{ number_format($totalQuantity, 0, ',', '.') }}</td>
                   <td>{{ number_format($totalPrice, 0, ',', '.') }}</td>
                   <td>{{ number_format($totalCom, 0, ',', '.') }}</td>
                   <td>{{ number_format($totalComSys, 0, ',', '.') }}</td>
@@ -190,7 +192,10 @@
                     {{ $row->product_name }}
                   </td>
                   <td>
-                    {{ number_format($row->unit_price, 0, ',', '.') }}
+                    {{ number_format($row->quantity, 0, ',', '.') }}
+                  </td>
+                  <td>
+                    {{ number_format($row->unit_price * $row->quantity, 0, ',', '.') }}
                   </td>
                   <td>
                     {{ number_format($row->commission_pub, 0, ',', '.') }}

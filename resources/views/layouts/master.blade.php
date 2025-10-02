@@ -5,6 +5,7 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>@yield('title') | TK Global Admin</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="{{ asset('assets/vendors/feather/feather.css') }}">
@@ -187,6 +188,12 @@
             <a class="nav-link" href="{{ route('users') }}">
               <i class="mdi mdi-account-group menu-icon"></i>
               <span class="menu-title">Publisher</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('utilities-view') }}">
+              <i class="mdi mdi-puzzle menu-icon"></i>
+              <span class="menu-title">Tiện ích</span>
             </a>
           </li>
         </ul>

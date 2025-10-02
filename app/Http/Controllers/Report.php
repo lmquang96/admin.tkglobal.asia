@@ -87,11 +87,15 @@ class Report extends Controller
       return $item->quantity * $item->commission_sys;
     });
 
+    $totalQuantity = $data->get()->sum(function ($item) {
+      return $item->quantity;
+    });
+
     $data = $data->orderBy('order_time', 'desc')->paginate(self::PER_PAGE)->withQueryString();
 
     $campaigns = Campaign::where('status', 1)->get();
 
-    return view('content.reports.order', compact('data', 'totalPrice', 'totalCom', 'totalComSys', 'totalConversion', 'campaigns'));
+    return view('content.reports.order', compact('data', 'totalPrice', 'totalCom', 'totalComSys', 'totalConversion', 'totalQuantity', 'campaigns'));
   }
 
   public function exportReportOrder(Request $request) 
