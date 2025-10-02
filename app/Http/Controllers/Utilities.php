@@ -70,18 +70,18 @@ class Utilities extends Controller
     }
 
     try {
-      // Conversion::insert($insertData);
+      Conversion::insert($insertData);
 
-      // Conversion::removeDup(
-      //   $campaginId,
-      //   Carbon::now()->subDays(120)->format('Y-m-d'),
-      //   Carbon::now()->format('Y-m-d')
-      // );
+      Conversion::removeDup(
+        $campaginId,
+        Carbon::now()->subDays(120)->format('Y-m-d'),
+        Carbon::now()->format('Y-m-d')
+      );
 
       return response()->json([
-        'status' => 400,
+        'status' => 200,
         'message' => 'succcess'
-      ], 400);
+      ], 200);
     } catch (\Throwable $th) {
       return response()->json([
         'status' => 400,
