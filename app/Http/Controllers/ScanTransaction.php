@@ -17,7 +17,8 @@ class ScanTransaction extends Controller
         16, // KKday Global - CPS
         31, // Trip.com - CPS private
         14, // Trip.com Network
-        33 // Traveloka ID - CPS
+        33, // Traveloka ID - CPS
+        32 // Klook HK
     ];
 
     public function index(Request $request) {

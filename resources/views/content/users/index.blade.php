@@ -1,6 +1,6 @@
 @extends('layouts/master')
 
-@section('title', 'Campaigns')
+@section('title', 'Publishers')
 @section('content')
 <div class="content-wrapper">
   <div class="col-lg-12 grid-margin stretch-card">

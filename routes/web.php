@@ -10,6 +10,7 @@ use App\Http\Controllers\Category;
 use App\Http\Controllers\ScanTransaction;
 use App\Http\Controllers\User;
 use App\Http\Controllers\Utilities;
+use App\Http\Controllers\Integration;
 
 Route::get('/login', [Authenticate::class, 'login'])->name('login');
 Route::post('/authenticate', [Authenticate::class, 'authenticate'])->name('authenticate');
@@ -64,5 +65,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::prefix('utilities/')->group(function (){
     Route::get('/', [Utilities::class, 'view'])->name('utilities-view');
     Route::post('/shopee-upload', [Utilities::class, 'shopeeUpload'])->name('utilities-shopee-upload');
+  });
+
+  Route::prefix('integration/')->group(function (){
+    Route::get('/campaign', [Integration::class, 'index'])->name('integration-campaign');
+    Route::post('/campaign-save', [Integration::class, 'create'])->name('integration-campaign-save');
   });
 });

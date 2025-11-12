@@ -13,6 +13,7 @@ class Campaign extends Controller
 
   public function index() {
     $campaigns = CampaignModel::query()
+    ->orderBy('id', 'desc')
     ->paginate(self::ITEM_PER_PAGE);
 
     return view('content.campaigns.index', compact('campaigns'));
