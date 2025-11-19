@@ -56,7 +56,7 @@ class ScanTransaction extends Controller
         Transaction::where('target_month', $month)->where('campaign_id', $campaignId)->delete();
 
         if (in_array($campaignId, self::PAID_MONTH_CAMPAIGN)) {
-            $orderTimeStart = Carbon::parse($month.'-01 00:00:00')->subMonths(6)->format('Y-m-d h:i:s');
+            $orderTimeStart = Carbon::parse($month.'-01 00:00:00')->subMonths(10)->format('Y-m-d h:i:s');
             $conversions = Conversion::query()
             ->whereBetween('paid_at', [$month.'-01 00:00:00', $month.'-31 23:59:59'])
             ->whereBetween('order_time', [$orderTimeStart, $month.'-31 23:59:59'])
