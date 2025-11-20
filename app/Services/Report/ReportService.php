@@ -32,9 +32,13 @@ class ReportService
           $dateArray = explode(" - ", $date);
           $q->whereBetween('order_time', [$dateArray[0] . ' 00:00:00', $dateArray[1] . ' 23:59:59']);
         })
-        ->when($request->keyword, function ($q, $keyword) {
-          return $q->whereHas('campaign', function ($query) use ($keyword) {
-            $query->where('name', 'like', '%' . $keyword . '%');
+        ->when($request->keyword, function ($q, $keyword) use ($request) {
+          return $q->whereHas('campaign', function ($query) use ($keyword, $request) {
+            if ($request->ex) {
+                $query->where('name', '=', $keyword);
+            } else {
+                $query->where('name', 'like', '%' . $keyword . '%');
+            }
           });
         })
         ->when($request->status, function ($q, $status) {

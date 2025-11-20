@@ -89,7 +89,7 @@
                   <td>{{ number_format($row->amount_pub, 0, ',', '.') }}</td>
                   <td>{{ number_format($row->amount_sys, 0, ',', '.') }}</td>
                   <td>{{ $row->created_at }}</td>
-                  <td><a href="{{ route('report-order', ['status' => 'Paid', 'affiliate_id' => $row->user->profile->affiliate_id, 'paid_at' => request('month', \Carbon\Carbon::now()->format('Y-m')), 'keyword' => $row->campaign->name]) }}" style="color: blueviolet;">Xem đơn hàng</a></td>
+                  <td><a href="{{ route('report-order', ['status' => 'Paid', 'affiliate_id' => $row->user->profile->affiliate_id, 'paid_at' => request('month', \Carbon\Carbon::now()->format('Y-m')), 'keyword' => $row->campaign->name, 'ex' => 1]) }}" style="color: blueviolet;">Xem đơn hàng</a></td>
                 </tr>
                 @endforeach
               </tbody>
@@ -183,7 +183,7 @@
     defaultDate: new Date(),
   });
 
-  $("#form-scan").submit(function (e) { 
+  $("#form-scan").submit(function (e) {
     e.preventDefault();
     $(".scanning-popup").removeClass("hidden");
     $(".scanning-popup .inner").css({
@@ -226,14 +226,14 @@
     });
   });
 
-  $("#monthpicker").change(function (e) { 
+  $("#monthpicker").change(function (e) {
     e.preventDefault();
     let url = new URL(window.location.href);
     url.searchParams.set('month', $(this).val());
     window.location.href = url.toString();
   });
 
-  $("#by_business").change(function (e) { 
+  $("#by_business").change(function (e) {
     e.preventDefault();
     let url = new URL(window.location.href);
     url.searchParams.set('by_business', $(this).val());
