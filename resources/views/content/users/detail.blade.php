@@ -271,7 +271,7 @@
       type: "GET",
       url: "https://provinces.open-api.vn/api/",
       success: function(response) {
-        let profileCity = '{{ auth()->user()->profile->city_code ?? null }}'
+        let profileCity = '{{ $user->profile->city_code ?? null }}'
         let html = '<option value="">-- Chọn --</option>';
         $.each(response, function(index, item) {
           html +=
@@ -286,8 +286,9 @@
       type: "GET",
       url: "https://api.vietqr.io/v2/banks",
       success: function(response) {
-        let profileCity = '{{ auth()->user()->profile->bank_code ?? null }}'
+        let profileCity = '{{ $user->bank_code ?? null }}'
         let html = '<option value="">-- Chọn --</option>';
+        console.log(profileCity);
         $.each(response.data, function(index, item) {
           html +=
             `<option value="${item.code}|${item.name}" ${profileCity == item.code ? 'selected' : ''}>${item.name}</option>`;
