@@ -106,7 +106,7 @@
               <span class="font-bold">{{ auth()->user()->name }}</span>
             </div>
             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" id="profileDropdown">
-              <img src="{{ !empty(auth()->user()->profile->avatar) ? asset('https://tkglobal.asia/assets/img/avatars/' . auth()->user()->profile->avatar) : asset('assets/images/avatar/default.png') }}" alt="profile" />
+              <img src="{{ !empty(auth()->user()->profile->avatar) ? asset('https://pub.tkglobal.asia/assets/img/avatars/' . auth()->user()->profile->avatar) : asset('assets/images/avatar/default.png') }}" alt="profile" />
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
               {{-- <a class="dropdown-item">
