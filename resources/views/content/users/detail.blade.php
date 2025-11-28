@@ -243,7 +243,7 @@
               <h6 class="mb-2">Ảnh mặt trước</h6>
               <div class="id-card-upload-wrapper">
                 <div class="content-center justify-items-center id-card-upload">
-                  <img src="{{ 'https://tkglobal.asia/' . $user->id_img_front }}" alt="">
+                  <img src="{{ 'https://pub.tkglobal.asia/' . $user->id_img_front }}" alt="">
                 </div>
               </div>
             </div>
@@ -251,7 +251,7 @@
               <h6 class="mb-2">Ảnh mặt sau</h6>
               <div class="id-card-upload-wrapper">
                 <div class="content-center justify-items-center id-card-upload">
-                  <img src="{{ 'https://tkglobal.asia/' . $user->id_img_back }}" alt="">
+                  <img src="{{ 'https://pub.tkglobal.asia/' . $user->id_img_back }}" alt="">
                 </div>
               </div>
             </div>
