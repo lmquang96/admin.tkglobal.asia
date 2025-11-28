@@ -7,9 +7,9 @@ use App\Services\User\UserService;
 
 class User extends Controller
 {
-  public function index(UserService $userService)
+  public function index(Request $request, UserService $userService)
   {
-    $users = $userService->getUser();
+    $users = $userService->getUser($request) ?? [];
 
     return view('content.users.index', compact('users'));
   }

@@ -10,6 +10,36 @@
         <!-- <a href="{{ route('category-create') }}" class="btn btn-primary mb-2 btn-icon-text btn-sm">
           <i class="ti-plus btn-icon-prepend" style="font-size: 0.75rem;"></i>Thêm mới
         </a> -->
+        <form id="form-scan" class="form-sample" method="GET">
+            <div class="row">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Tên</label>
+                  <input type="text" class="form-control form-control-sm" name="name" placeholder="Nhập tên" value="{{ request('name') }}">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Email</label>
+                  <input type="email" class="form-control form-control-sm" name="email" placeholder="Nhập email" value="{{ request('email') }}">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Affiliate ID</label>
+                  <input type="text" class="form-control form-control-sm" name="affiliate_id" placeholder="Nhập affiliate id" value="{{ request('affiliate_id') }}">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="d-block text-white">.</label>
+                  <button type="submit" class="btn btn-primary mb-2 btn-icon-text">
+                    <i class="mdi mdi-filter btn-icon-prepend"></i>Lọc
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
         <div class="table-responsive pt-3">
           <table class="table table-bordered table-hover">
             <thead>

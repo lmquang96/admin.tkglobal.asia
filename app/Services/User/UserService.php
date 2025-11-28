@@ -11,13 +11,26 @@ use Illuminate\Support\Facades\DB;
 class UserService
 {
 
-  public function getUser()
+  public function getUser($request)
   {
+    $name = $request->name;
+    $email = $request->email;
+    $affiliateId = $request->affiliate_id;
+
     try {
       return User::query()
       ->join('profiles', 'users.id', '=', 'profiles.user_id')
       ->whereNotNull('profiles.affiliate_id')
       ->whereNotNull('users.email_verified_at')
+      ->when($name, function($q) use($name) {
+        return $q->where('name', $name);
+      })
+      ->when($email, function($q) use($email) {
+        return $q->where('email', $email);
+      })
+      ->when($affiliateId, function($q) use($affiliateId) {
+        return $q->where('profiles.affiliate_id', $affiliateId);
+      })
       ->get();
     } catch (\Throwable $th) {
       Log::error('Lỗi xảy ra khi select user: ' . $th->getMessage());
@@ -62,9 +75,9 @@ class UserService
           ,0 advance
         FROM transactions
         WHERE user_id = $id
-        
+
         UNION ALL
-        
+
         SELECT DATE_FORMAT(submission_date, '%Y-%m') target_month
           ,submission_date
           ,NULL processing_date
@@ -74,9 +87,9 @@ class UserService
           ,0 advance
         FROM payment_requests
         WHERE user_id = $id
-        
+
         UNION ALL
-        
+
         SELECT DATE_FORMAT(submission_date, '%Y-%m') target_month
           ,submission_date
           ,processing_date
@@ -88,9 +101,9 @@ class UserService
         WHERE user_id = $id
           AND processing_date IS NOT NULL
           AND STATUS = 2
-        
+
         UNION ALL
-        
+
         SELECT target_month
           ,NULL submission_date
           ,NULL processing_date
