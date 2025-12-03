@@ -22,6 +22,26 @@ class User extends Controller
     return view('content.users.detail', compact('user'));
   }
 
+  public function updateProfile(Request $request, UserService $userService) {
+    $doUpdate = $userService->updateUserProfile($request);
+
+    if ($doUpdate) {
+      return redirect()->back()->with('message', 'Cập nhật thành công!');
+    }
+
+    return redirect()->back()->withErrors('message', 'Cập nhật thất bại!');
+  }
+
+  public function updateBank(Request $request, UserService $userService) {
+    $doUpdate = $userService->updateUserBank($request);
+
+    if ($doUpdate) {
+      return redirect()->back()->with('message', 'Cập nhật thành công!');
+    }
+
+    return redirect()->back()->withErrors('message', 'Cập nhật thất bại!');
+  }
+
   public function payable(Request $request, UserService $userService)
   {
     $id = $request->id;

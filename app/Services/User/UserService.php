@@ -185,4 +185,82 @@ class UserService
     ->limit(6)
     ->get();
   }
+
+  public function updateUserProfile($request) {
+    $name = $request->name;
+    $phone = $request->phone;
+    $address = $request->address;
+    $city = $request->city;
+    $accountType = $request->account_type;
+    $id = $request->id;
+
+    $cityCode = $cityName = null;
+
+    if ($city) {
+        $cityObject = explode("|", $city);
+        if (count($cityObject) == 2) {
+            $cityCode = $cityObject[0];
+            $cityName = $cityObject[1];
+        }
+    }
+
+    try {
+        User::where('id', $id)->update(['name' => $name]);
+        Profile::where('user_id', $id)->update([
+            'phone' => $phone,
+            'address' => $address,
+            'account_type' => $accountType,
+            'city_code' => $cityCode,
+            'city_name' => $cityName
+        ]);
+
+        return true;
+    } catch (\Throwable $th) {
+        Log::error('Lỗi xảy ra khi update user profile: ' . $th->getMessage());
+
+        return false;
+    }
+  }
+
+  public function updateUserBank($request) {
+    $bankOwner = $request->bank_owner;
+    $bankNumber = $request->bank_number;
+    $bank = $request->bank;
+    $bankBranch = $request->bank_branch;
+    $citizenIdNo = $request->citizen_id_no;
+    $citizenIdDate = $request->citizen_id_date;
+    $citizenIdPlace = $request->citizen_id_place;
+    $tax = $request->tax;
+    $id = $request->id;
+
+    $bankCode = $bankName = null;
+
+    if ($bank) {
+        $bankObject = explode("|", $bank);
+        if (count($bankObject) == 2) {
+            $bankCode = $bankObject[0];
+            $bankName = $bankObject[1];
+        }
+    }
+
+    try {
+        Profile::where('user_id', $id)->update([
+            'bank_owner' => $bankOwner,
+            'bank_number' => $bankNumber,
+            'bank_code' => $bankCode,
+            'bank_name' => $bankName,
+            'bank_branch' => $bankBranch,
+            'citizen_id_no' => $citizenIdNo,
+            'citizen_id_date' => $citizenIdDate,
+            'citizen_id_place' => $citizenIdPlace,
+            'tax' => $tax
+        ]);
+
+        return true;
+    } catch (\Throwable $th) {
+        Log::error('Lỗi xảy ra khi update user bank: ' . $th->getMessage());
+
+        return false;
+    }
+  }
 }

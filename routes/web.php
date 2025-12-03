@@ -58,7 +58,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::prefix('users')->group(function (){
     Route::get('/', [User::class, 'index'])->name('users');
     Route::get('/detail', [User::class, 'detail'])->name('user-detail');
-    Route::post('/detail', [User::class, 'update'])->name('user-detail-update');
+    Route::post('/update-profile', [User::class, 'updateProfile'])->name('user-detail-update-profile');
+    Route::post('/update-bank', [User::class, 'updateBank'])->name('user-detail-update-bank');
     Route::get('/payable', [User::class, 'payable'])->name('user-payable');
     Route::put('/update-id-image', [User::class, 'updateIdImage'])->name('user-update-id-image');
   });

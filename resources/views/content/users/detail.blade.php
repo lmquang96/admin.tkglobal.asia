@@ -12,8 +12,9 @@
       <div class="card">
         <div class="card-body">
           <h4 class="card-title">Thông tin Tài khoản</h4>
-          <form class="form-sample" method="POST" action="#">
+          <form class="form-sample" method="POST" action="{{ route('user-detail-update-profile') }}">
             @csrf
+            <input type="hidden" name="id" value="{{ $user->user_id }}" >
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group row">
@@ -113,8 +114,9 @@
       <div class="card mt-6">
         <div class="card-body">
           <h4 class="card-title">Thông tin Thanh toán</h4>
-          <form class="form-sample" method="POST" action="{{ route('campaign-store', ['id' => request('id')]) }}">
+          <form class="form-sample" method="POST" action="{{ route('user-detail-update-bank') }}">
             @csrf
+            <input type="hidden" name="id" value="{{ $user->user_id }}" >
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group row">
@@ -271,7 +273,7 @@
       type: "GET",
       url: "https://provinces.open-api.vn/api/",
       success: function(response) {
-        let profileCity = '{{ $user->profile->city_code ?? null }}'
+        let profileCity = '{{ $user->city_code ?? null }}';
         let html = '<option value="">-- Chọn --</option>';
         $.each(response, function(index, item) {
           html +=
