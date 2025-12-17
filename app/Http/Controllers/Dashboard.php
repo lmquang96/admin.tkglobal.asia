@@ -108,7 +108,7 @@ class Dashboard extends Controller
       $merged = [];
       $comData = self::getComData($sDate, $eDate, $byBusiness);
       $clickData = self::getClickData($sDate, $eDate, $byBusiness);
-      
+
       $merged['com'] = $comData;
       $merged['click'] = $clickData;
 
