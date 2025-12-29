@@ -74,6 +74,7 @@
             <select class="form-control form-control-sm" name="platform">
               <option value="involve">Involve</option>
               <option value="goodaff">Goodaff</option>
+              <option value="travelpayouts">Travelpayouts</option>
             </select>
           </div>
           <div class="mb-3">
