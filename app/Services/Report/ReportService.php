@@ -28,6 +28,10 @@ class ReportService
 
       $data = Conversion::query()
         ->join('profiles', 'conversions.user_id', '=', 'profiles.user_id')
+        ->join('clicks', 'clicks.id', '=', 'conversions.click_id')
+        ->join('link_histories', 'link_histories.id', '=', 'clicks.link_history_id')
+        ->join('campaigns', 'campaigns.id', '=', 'conversions.campaign_id')
+        ->join('users', 'users.id', '=', 'conversions.user_id')
         ->when($request->date, function ($q, $date) {
           $dateArray = explode(" - ", $date);
           $q->whereBetween('order_time', [$dateArray[0] . ' 00:00:00', $dateArray[1] . ' 23:59:59']);
@@ -46,10 +50,10 @@ class ReportService
           //   $q->where('paid_at', 'like', "'".$request->paid_at."%'");
           // }
           if ($status == 'Paid') {
-            $q->where('status', 'Approved')
+            $q->where('conversions.status', 'Approved')
               ->whereNotNull('paid_at');
           } else {
-            $q->where('status', $status);
+            $q->where('conversions.status', $status);
           }
         })
         ->when($request->by_business, function ($q, $by_business) {
@@ -100,7 +104,33 @@ class ReportService
               $qr->where('sub4', 'like', '%' . $sub4 . '%');
             });
           });
-        });
+        })
+        ->select(
+          'conversions.code',
+          'conversions.order_time',
+          'conversions.order_code',
+          'conversions.product_code',
+          'conversions.product_name',
+          'conversions.unit_price',
+          'conversions.quantity',
+          'conversions.commission_pub',
+          'conversions.commission_sys',
+          'conversions.status',
+
+          'clicks.created_at as click_time',
+
+          'campaigns.name as campaign',
+
+          'users.name as user_name',
+          'users.email as user_email',
+
+          'profiles.affiliate_id',
+
+          'link_histories.sub1',
+          'link_histories.sub2',
+          'link_histories.sub3',
+          'link_histories.sub4'
+        );
 
       return $data;
     } catch (\Throwable $th) {

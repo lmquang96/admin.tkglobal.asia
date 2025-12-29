@@ -73,4 +73,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/campaign', [Integration::class, 'index'])->name('integration-campaign');
     Route::post('/campaign-save', [Integration::class, 'create'])->name('integration-campaign-save');
   });
+
+  Route::get('/export-test', function () {
+    dd('ok');
+});
 });
