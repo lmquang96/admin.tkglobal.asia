@@ -168,18 +168,18 @@
                     {{ $row->order_time }}
                   </td>
                   <td>
-                    {{ $row->click->created_at }}
+                    {{ $row->click_time }}
                   </td>
                   <td>
-                    {{ $row->campaign->name }}
+                    {{ $row->campaign }}
                   </td>
                   <td>
-                    <div>{{ $row->user->name }}</div>
+                    <div>{{ $row->user_name }}</div>
                     <div class="mt-1">
-                      <small class="text-info">{{ $row->user->profile->affiliate_id }}</small>
+                      <small class="text-info">{{ $row->affiliate_id }}</small>
                     </div>
                     <div class="mt-1">
-                      <small class="text-primary">{{ $row->user->email }}</small>
+                      <small class="text-primary">{{ $row->user_email }}</small>
                     </div>
                   </td>
                   <td>
