@@ -2,13 +2,15 @@
 
 namespace App\Exports;
 
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\FromQuery;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithMapping;
 use App\Services\Report\ReportService;
 use App\Common\Transformer\Order as OrderTransformer;
 
-class ReportOrderExport implements FromCollection, WithHeadings
+class ReportOrderExport implements FromQuery, WithHeadings, WithChunkReading, WithMapping
 {
   /**
    * @return \Illuminate\Support\Collection
@@ -49,13 +51,30 @@ class ReportOrderExport implements FromCollection, WithHeadings
     ];
   }
 
-  public function collection()
+  // public function collection()
+  // {
+  //   $data = $this->reportService->getOrdersQueryBuilderObject($this->request);
+  //   $data = $data->orderBy('order_time', 'desc')->get();
+
+  //   $results = $data->map(fn($order) => OrderTransformer::exportFormat($order));
+
+  //   return collect($results);
+  // }
+
+  public function query()
   {
-    $data = $this->reportService->getOrdersQueryBuilderObject($this->request);
-    $data = $data->orderBy('order_time', 'desc')->get();
+    return app(ReportService::class)
+      ->getOrdersQueryBuilderObject($this->request)
+      ->orderBy('order_time', 'desc');
+  }
 
-    $results = $data->map(fn($order) => OrderTransformer::exportFormat($order));
+  public function map($order): array
+  {
+    return OrderTransformer::exportFormat($order);
+  }
 
-    return collect($results);
+  public function chunkSize(): int
+  {
+    return 1000;
   }
 }

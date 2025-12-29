@@ -98,12 +98,12 @@ class Report extends Controller
     return view('content.reports.order', compact('data', 'totalPrice', 'totalCom', 'totalComSys', 'totalConversion', 'totalQuantity', 'campaigns'));
   }
 
-  public function exportReportOrder(Request $request) 
+  public function exportReportOrder(Request $request)
   {
     return Excel::download(new ReportOrderExport($request, app(ReportService::class)), 'tk-report-order-'.Carbon::now()->format('YmdHis').'-'.time().'.xlsx');
   }
 
-  public function exportReportPerformance(Request $request) 
+  public function exportReportPerformance(Request $request)
   {
     return Excel::download(new ReportPerformanceExport($request, app(ReportService::class)), 'tk-report-performance-'.Carbon::now()->format('YmdHis').'-'.time().'.xlsx');
   }
