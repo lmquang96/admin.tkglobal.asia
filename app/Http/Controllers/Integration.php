@@ -26,6 +26,7 @@ class Integration extends Controller
     $platform_id = null;
     try {
       $path = parse_url($request->platform_url, PHP_URL_PATH);
+      $query = parse_url($request->platform_url, PHP_URL_QUERY);
       switch ($request->platform) {
         case 'involve':
           $platform_id = substr($path, 1);
@@ -34,6 +35,11 @@ class Integration extends Controller
         case 'goodaff':
           $pathArray = explode('/', $path);
           $platform_id = $pathArray[1];
+          break;
+
+        case 'travelpayouts':
+          parse_str($query, $params);
+          $platform_id = $params['campaign_id'];
           break;
 
         default:
