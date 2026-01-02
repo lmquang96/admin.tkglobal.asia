@@ -11,6 +11,7 @@ use App\Http\Controllers\ScanTransaction;
 use App\Http\Controllers\User;
 use App\Http\Controllers\Utilities;
 use App\Http\Controllers\Integration;
+use App\Http\Controllers\CommissionRate;
 
 Route::get('/login', [Authenticate::class, 'login'])->name('login');
 Route::post('/authenticate', [Authenticate::class, 'authenticate'])->name('authenticate');
@@ -72,6 +73,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::prefix('integration/')->group(function (){
     Route::get('/campaign', [Integration::class, 'index'])->name('integration-campaign');
     Route::post('/campaign-save', [Integration::class, 'create'])->name('integration-campaign-save');
+  });
+
+  Route::prefix('commission-rate/')->group(function (){
+    Route::get('/', [CommissionRate::class, 'index'])->name('commission-rate');
+    Route::post('/', [CommissionRate::class, 'create'])->name('commission-rate-create');
   });
 
   Route::get('/export-test', function () {

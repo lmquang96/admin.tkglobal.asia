@@ -67,4 +67,8 @@ class User extends Authenticatable
     public function advancePaymentHistories() {
         return $this->hasMany(AdvancePaymentHistory::class);
     }
+
+    public function commissionRate() {
+        return $this->hasOne(commissionRate::class);
+    }
 }

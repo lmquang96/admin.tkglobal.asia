@@ -211,6 +211,12 @@
               </ul>
             </div>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('commission-rate') }}">
+              <i class="mdi mdi-shape-plus-outline menu-icon"></i>
+              <span class="menu-title">Tỉ lệ hoa hồng</span>
+            </a>
+          </li>
         </ul>
       </nav>
       <!-- partial -->
