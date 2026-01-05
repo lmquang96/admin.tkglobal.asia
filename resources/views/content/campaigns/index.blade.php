@@ -22,6 +22,50 @@
           <i class="ti-plus btn-icon-prepend" style="font-size: 0.75rem;"></i>Thêm mới
         </a>
         </p>
+        <form class="form-sample" method="GET" action="{{ route('campaigns') }}">
+            <div class="row">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Tên</label>
+                  <input type="text" class="form-control form-control-sm" list="datalistOptions" name="keyword" value="{{ request('keyword') }}">
+                  <datalist id="datalistOptions">
+                    @foreach ($campaigns as $campaign)
+                    <option value="{{ $campaign->name }}">
+                    @endforeach
+                  </datalist>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Danh mục</label>
+                  <select class="form-select" name="category_id">
+                    <option value="">Tất cả</option>
+                    @foreach ($categories as $category)
+                    <option value="{{ $category->id }}" {{ request('status') === $category->id ? 'selected' : ''}}>{{ $category->name }}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Trạng thái</label>
+                  <select class="form-select" name="status">
+                    <option value="">Tất cả</option>
+                    <option value="1" {{ request('status') === "1" ? 'selected' : ''}}>Hoạt động</option>
+                    <option value="0" {{ request('status') === "0" ? 'selected' : ''}}>Đang dừng</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label class="d-block text-white">.</label>
+                  <button type="submit" class="btn btn-primary mb-2 btn-icon-text">
+                    <i class="ti-filter btn-icon-prepend" style="font-size: 0.75rem;"></i>Lọc
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
         @if (isset($campaigns) && !$campaigns->isEmpty())
         <div class="table-responsive pt-3">
           <table class="table table-bordered table-hover">

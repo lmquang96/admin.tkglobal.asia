@@ -11,12 +11,23 @@ class Campaign extends Controller
 {
   const ITEM_PER_PAGE = 20;
 
-  public function index() {
+  public function index(Request $request) {
     $campaigns = CampaignModel::query()
+    ->when($request->category_id, function ($q, $category_id) {
+        $q->where('category_id', $category_id);
+    })
+    ->when($request->filled('status'), function ($q) use ($request) {
+        $q->where('status', $request->status);
+    })
+    ->when($request->keyword, function ($q, $keyword) {
+        return $q->where('name', 'like', '%' . $keyword . '%');
+    })
     ->orderBy('id', 'desc')
     ->paginate(self::ITEM_PER_PAGE);
 
-    return view('content.campaigns.index', compact('campaigns'));
+    $categories = Category::where('status', 1)->get();
+
+    return view('content.campaigns.index', compact('campaigns', 'categories'));
   }
 
   public function create() {
