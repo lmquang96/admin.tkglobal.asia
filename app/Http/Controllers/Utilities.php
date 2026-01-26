@@ -41,8 +41,8 @@ class Utilities extends Controller
         $sumcom = $row['tong_hoa_hong_san_phamd'];
         $status = 'Pending';
 
-        $commissionPub = $sumcom * $pubRate;
-        $commissionSys = $sumcom * $sysRate;
+        $commissionPub = $sumcom * $pubRate * 0.99;
+        $commissionSys = $sumcom * $sysRate * 0.99;
 
         $productCode = $row['item_id'].'_'.$row['id_model'].($row['promotion_id'] ? '_'.$row['promotion_id'] : '');
         $productName = $row['ten_item'].' | '.$row['ten_shop'];
@@ -64,30 +64,33 @@ class Utilities extends Controller
           'user_id' => $userId,
           'created_at' => Carbon::now(),
           'updated_at' => Carbon::now(),
-          'comment' => null
+          'comment' => 'payment 202601-4'
         ];
       }
     }
 
     try {
       foreach ($insertData as $item) {
-        Conversion::upsert(
-          [
-            $item
-          ],
-          [
-            'campaign_id',
-            'order_code',
-            'product_code',
-          ],
-          [
-            'unit_price',
-            'quantity',
-            'commission_pub',
-            'commission_sys',
-            'updated_at',
-          ]
-        );
+        Conversion::insert($item);
+        // Conversion::upsert(
+        //   [
+        //     $item
+        //   ],
+        //   [
+        //     'campaign_id',
+        //     'order_code',
+        //     'product_code',
+        //   ],
+        //   [
+        //     'unit_price',
+        //     'quantity',
+        //     'commission_pub',
+        //     'commission_sys',
+        //     'updated_at',
+        //     'comment',
+        //     'order_time'
+        //   ]
+        // );
       }
       // Conversion::insert($insertData);
 

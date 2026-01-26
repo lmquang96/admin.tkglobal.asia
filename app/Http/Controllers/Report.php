@@ -79,12 +79,12 @@ class Report extends Controller
       return $item->quantity * $item->unit_price;
     });
 
-    $totalCom = $data->get()->sum(function ($item) {
-      return $item->quantity * $item->commission_pub;
+    $totalCom = $data->get()->sum(function ($item) use ($request) {
+      return ($request->keyword == 'Shopee' ? 1 : $item->quantity) * $item->commission_pub;
     });
 
-    $totalComSys = $data->get()->sum(function ($item) {
-      return $item->quantity * $item->commission_sys;
+    $totalComSys = $data->get()->sum(function ($item) use ($request) {
+      return ($request->keyword == 'Shopee' ? 1 : $item->quantity) * $item->commission_sys;
     });
 
     $totalQuantity = $data->get()->sum(function ($item) {
