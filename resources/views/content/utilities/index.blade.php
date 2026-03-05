@@ -45,7 +45,7 @@
             <div>Browse file to upload</div>
           </div>
           <input type="file" id="shopee-upload-file-input" hidden />
-          <div class="bg-indigo-100 flex mt-6 p-1 gap-x-4 hidden" id="shopee-upload-file-alert">
+          <div class="bg-indigo-100 mt-6 p-1 gap-x-4 hidden" id="shopee-upload-file-alert">
             <div>
               <i class="mdi mdi-file-document btn-icon-prepend text-[40px] text-indigo-500"></i>
             </div>
@@ -86,9 +86,11 @@
         $("#shopee-upload-file-size").html(fileSize);
         $("#shopee-upload-file-button").removeClass('hidden');
         $("#shopee-upload-file-alert").removeClass('hidden');
+        $("#shopee-upload-file-alert").addClass('flex');
       } else {
         $("#shopee-upload-file-button").addClass('hidden');
         $("#shopee-upload-file-alert").addClass('hidden');
+        $("#shopee-upload-file-alert").removeClass('flex');
       }
     });
 
