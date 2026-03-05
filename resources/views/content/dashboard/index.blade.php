@@ -743,7 +743,7 @@
 @endsection
 @section('script')
 <script>
-$("#by_business").change(function (e) { 
+$("#by_business").change(function (e) {
   e.preventDefault();
   let url = new URL(window.location.href);
   url.searchParams.set('by_business', $(this).val());

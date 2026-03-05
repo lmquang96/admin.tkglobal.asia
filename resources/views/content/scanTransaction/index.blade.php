@@ -1,6 +1,6 @@
 @extends('layouts/master')
 
-@section('title', 'Reports')
+@section('title', 'Scan Transaction')
 @section('content')
 <div class="content-wrapper position-relative overflow-auto">
   <div class="row">

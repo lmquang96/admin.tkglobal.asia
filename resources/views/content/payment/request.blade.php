@@ -3,7 +3,7 @@
 @section('title', 'Payment - Đăng ký rút tiền')
 @section('content')
 <div class="content-wrapper">
-  <div class="row">z
+  <div class="row">
     <div class="col-lg-12 grid-margin stretch-card">
       <div class="card">
         <div class="card-body">
@@ -233,9 +233,9 @@
     defaultDate: new Date(),
   });
 
-  $(".payment-update-form").submit(function (e) { 
+  $(".payment-update-form").submit(function (e) {
     e.preventDefault();
-    
+
     Swal.fire({
       title: "Bạn đã chắc chưa?",
       text: "Hãy xác nhận yêu cầu của mình!",

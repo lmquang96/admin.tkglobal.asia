@@ -1,6 +1,6 @@
 @extends('layouts/master')
 
-@section('title', 'Tiện ích')
+@section('title', 'Utilities')
 @section('css')
   <link rel="stylesheet" href="{{ asset('assets/css/utilities.css') }}">
 @endsection
