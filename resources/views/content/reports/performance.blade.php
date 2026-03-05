@@ -115,6 +115,7 @@
                   <th>Giá trị chuyển đổi</th>
                   <th>Hoa hồng Pub(₫)</th>
                   <th>Hoa hồng TK(₫)</th>
+                  <th>Tổng hoa hồng(₫)</th>
                   <th>Tỉ lệ</th>
                   <th></th>
                 </tr>
@@ -127,6 +128,7 @@
                   <td>{{ number_format($totalPrice, 0, ',', '.') }}</td>
                   <td>{{ number_format($totalCom, 0, ',', '.') }}</td>
                   <td>{{ number_format($totalComSys, 0, ',', '.') }}</td>
+                  <td>{{ number_format($totalCom + $totalComSys, 0, ',', '.') }}</td>
                   <td colspan="2"></td>
                 </tr>
                 </tr>
@@ -161,7 +163,7 @@
                     @endphp
                       {{ $row->campaign->name }}
                     @elseif(request('group', 'order_time') == 'order_time')
-                      {{ $row->date }}  
+                      {{ $row->date }}
                     @endif
                   </td>
                   <td> {{ number_format($clickByGroupId, 0, ',', '.') }} </td>
@@ -169,6 +171,7 @@
                   <td> {{ number_format($row->total_price, 0, ',', '.') }} </td>
                   <td> {{ number_format($row->total_com, 0, ',', '.') }} </td>
                   <td> {{ number_format($row->total_com_sys, 0, ',', '.') }} </td>
+                  <td> {{ number_format($row->total_com + $row->total_com_sys, 0, ',', '.') }} </td>
                   <td> {{ number_format($clickByGroupId > 0 ? ($row->cnt / $clickByGroupId) * 100 : 0, 1, ',', '.') }}% </td>
                   <td style="width: 80px;">
                     <a href="{{ route('report-order', ['groupValue' => $groupValue, 'date' => (request('group', 'order_time') == 'order_time' ? $row->date . ' - ' . $row->date : request('date')), 'group' => request('group', 'order_time'), 'affiliate_id' => request('affiliate_id'), 'keyword' => request('keyword'), 'status' => request('status'), 'paid_at' => request('paid_at')]) }}" style="color: blueviolet;">
