@@ -112,7 +112,7 @@ class UserService
           ,0 paid
           ,amount AS advance
         FROM advance_payment_histories
-        WHERE user_id = $id
+        WHERE user_id = $id and status = 0
         ) AS combined
       GROUP BY target_month
       ";
