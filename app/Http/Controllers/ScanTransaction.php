@@ -23,7 +23,8 @@ class ScanTransaction extends Controller
         38, // Trip.com Network - CPS (private)
         34, // Tripadvisor - CPS
         40, // Shopee
-        39 // Trip.com new (private)
+        39, // Trip.com new (private)
+        44 // StubHub CPA
     ];
 
     public function index(Request $request) {
