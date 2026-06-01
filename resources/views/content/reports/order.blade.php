@@ -25,7 +25,7 @@
                     <option value="Paid" {{ request('status') == 'Paid' ? 'selected' : ''}}>Đã Thanh toán</option>
                     <option value="Approved" {{ request('status') == 'Approved' ? 'selected' : ''}}>Đã duyệt</option>
                     <option value="Pending" {{ request('status') == 'Pending' ? 'selected' : ''}}>Tạm duyệt</option>
-                    <option value="Rejected" {{ request('status') == 'Rejected' ? 'selected' : ''}}>Đã hủy</option>
+                    <option value="Cancelled" {{ request('status') == 'Cancelled' ? 'selected' : ''}}>Đã hủy</option>
                   </select>
                 </div>
               </div>
