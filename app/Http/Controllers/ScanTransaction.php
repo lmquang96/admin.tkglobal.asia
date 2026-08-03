@@ -30,6 +30,7 @@ class ScanTransaction extends Controller
 
     public function index(Request $request) {
         $month = $request->month;
+        $campaignId = $request->campaign_id;
         if (!$month) {
             $month = Carbon::now()->format('Y-m');
         }
@@ -40,6 +41,9 @@ class ScanTransaction extends Controller
             return $q->join('campaigns', 'campaigns.id', '=', 'transactions.campaign_id')
             ->select('transactions.*', 'campaigns.*', 'transactions.created_at')
             ->where('geo', $geo);
+        })
+        ->when($campaignId, function($q, $campaignId) {
+            $q->where('campaign_id', $campaignId);
         });
 
         $totalAmountPub = $transaction->get()->sum(function ($item) {
