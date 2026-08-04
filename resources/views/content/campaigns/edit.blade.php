@@ -35,7 +35,7 @@
                   <label class="col-sm-3 col-form-label">Logo chiến dịch</label>
                   <div class="col-sm-9">
                     <div class="input-group d-flex align-items-center">
-                      <input type="text" class="form-control form-control-sm" value="{{ $campaignDetail->image }}" disabled>
+                      <input type="text" class="form-control form-control-sm" value="{{ $campaignDetail->image }}" name="image">
                       <div class="input-group-append">
                         <button class="btn btn-sm btn-primary ms-2" type="button">
                           <i class="ti-upload"></i>
@@ -51,7 +51,7 @@
                   <label class="col-sm-3 col-form-label">Logo 1:1</label>
                   <div class="col-sm-9">
                     <div class="input-group d-flex align-items-center">
-                      <input type="text" class="form-control form-control-sm" value="{{ $campaignDetail->image_square }}" disabled>
+                      <input type="text" class="form-control form-control-sm" value="{{ $campaignDetail->image_square }}" name="image_square">
                       <div class="input-group-append">
                         <button class="btn btn-sm btn-primary ms-2" type="button">
                           <i class="ti-upload"></i>

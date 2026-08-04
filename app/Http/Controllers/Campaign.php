@@ -109,6 +109,8 @@ class Campaign extends Controller
 
     $campaign = CampaignModel::find($id);
 
+    $campaign->image = $request->image;
+    $campaign->image_square = $request->image_square;
     $campaign->name = $request->name;
     $campaign->category_id = $request->category_id;
     $campaign->tracking_url = $request->tracking_url;
