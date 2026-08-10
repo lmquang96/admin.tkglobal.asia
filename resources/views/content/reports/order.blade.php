@@ -216,16 +216,16 @@
                     @endif
                   </td>
                   <td>
-                    {{ $row->click->linkHistory->sub1 ?? 'N/A' }}
+                    {{ $row->sub1 ?? 'N/A' }}
                   </td>
                   <td>
-                    {{ $row->click->linkHistory->sub2 ?? 'N/A' }}
+                    {{ $row->sub2 ?? 'N/A' }}
                   </td>
                   <td>
-                    {{ $row->click->linkHistory->sub3 ?? 'N/A' }}
+                    {{ $row->sub3 ?? 'N/A' }}
                   </td>
                   <td>
-                    {{ $row->click->linkHistory->sub4 ?? 'N/A' }}
+                    {{ $row->sub4 ?? 'N/A' }}
                   </td>
                   <td>
                     @if ($row->status == 'Pending')
