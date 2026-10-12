@@ -25,7 +25,8 @@ class ScanTransaction extends Controller
         40, // Shopee
         39, // Trip.com new (private)
         44, // StubHub CPA
-        59 // viagogo
+        59, // viagogo
+        43 // getyourguide
     ];
 
     public function index(Request $request) {
